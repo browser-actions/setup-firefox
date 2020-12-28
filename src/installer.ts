@@ -69,7 +69,7 @@ const makeDownloaderDownloadURL = (
     }
     throw new Error(`Unsupported firefox ${version} for platform ${os} ${arch}`)
   })()
-  return `https://download.mozilla.org/?product=${version}&os=${platform}&lang=${language}`
+  return `https://download.mozilla.org/?product=firefox-${version}&os=${platform}&lang=${language}`
 }
 
 const makeArchiveDownloadURL = (
