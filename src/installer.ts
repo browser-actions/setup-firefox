@@ -21,7 +21,7 @@ async function installForLinux(
     core.info(`Found in cache @ ${toolPath}`)
     return toolPath
   }
-  core.info(`Attempting to download ${version}...`)
+  core.info(`Attempting to download firefox ${version}...`)
 
   const url = makeDownloadURL(version, platform, language)
   core.info(`Acquiring ${version} from ${url}`)
@@ -29,11 +29,11 @@ async function installForLinux(
   const archivePath = await tc.downloadTool(url)
   core.info('Extracting Firefox...')
   const extPath = await tc.extractTar(archivePath, '', 'xj')
-  core.info(`Successfully extracted fiirefox to ${extPath}`)
+  core.info(`Successfully extracted fiirefox ${version} to ${extPath}`)
 
   core.info('Adding to the cache ...')
   const cachedDir = await tc.cacheDir(extPath, 'firefox', version)
-  core.info(`Successfully cached firefox to ${cachedDir}`)
+  core.info(`Successfully cached firefox ${version} to ${cachedDir}`)
   return cachedDir
 }
 
