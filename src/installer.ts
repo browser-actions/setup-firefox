@@ -1,5 +1,5 @@
 import {Platform, OS, Arch} from './platform'
-import {LatestVersion} from './versions'
+import {LatestVersion, isLatestVersion} from './versions'
 import * as tc from '@actions/tool-cache'
 import * as core from '@actions/core'
 
@@ -16,10 +16,13 @@ async function installForLinux(
   platform: Platform,
   language: string
 ): Promise<string> {
-  const toolPath = tc.find('firefox', version)
-  if (toolPath) {
-    core.info(`Found in cache @ ${toolPath}`)
-    return toolPath
+  const cacheEnabled = isLatestVersion(version)
+  if (cacheEnabled) {
+    const toolPath = tc.find('firefox', version)
+    if (toolPath) {
+      core.info(`Found in cache @ ${toolPath}`)
+      return toolPath
+    }
   }
   core.info(`Attempting to download firefox ${version}...`)
 
@@ -31,10 +34,12 @@ async function installForLinux(
   const extPath = await tc.extractTar(archivePath, '', 'xj')
   core.info(`Successfully extracted fiirefox ${version} to ${extPath}`)
 
-  core.info('Adding to the cache ...')
-  const cachedDir = await tc.cacheDir(extPath, 'firefox', version)
-  core.info(`Successfully cached firefox ${version} to ${cachedDir}`)
-  return cachedDir
+  if (cacheEnabled) {
+    core.info('Adding to the cache ...')
+    const cachedDir = await tc.cacheDir(extPath, 'firefox', version)
+    core.info(`Successfully cached firefox ${version} to ${cachedDir}`)
+  }
+  return extPath
 }
 
 const makeDownloadURL = (
@@ -42,11 +47,7 @@ const makeDownloadURL = (
   platform: Platform,
   language: string
 ): string => {
-  if (
-    version === LatestVersion.LATEST ||
-    version === LatestVersion.LATEST_BETA ||
-    version === LatestVersion.LATEST_ESR
-  ) {
+  if (isLatestVersion(version)) {
     return makeDownloaderDownloadURL(version, platform, language)
   }
   return makeArchiveDownloadURL(version, platform, language)
