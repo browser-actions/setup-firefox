@@ -14,12 +14,10 @@ async function run(): Promise<void> {
 
     core.info(`Setup firefox ${version} (${language})`)
 
-    if (version) {
-      const installDir = await installer.install(version, platform, language)
+    const installDir = await installer.install(version, platform, language)
 
-      core.addPath(path.join(installDir))
-      core.info(`Successfully setup firefox version ${version}`)
-    }
+    core.addPath(path.join(installDir))
+    core.info(`Successfully setup firefox version ${version}`)
 
     // output the version actually being used
     const firefoxBin = await io.which('firefox')
