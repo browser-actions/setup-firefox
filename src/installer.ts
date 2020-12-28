@@ -31,7 +31,11 @@ async function installForLinux(
 
   const archivePath = await tc.downloadTool(url)
   core.info('Extracting Firefox...')
-  const extPath = await tc.extractTar(archivePath, '', 'xj')
+  const extPath = await tc.extractTar(archivePath, '', [
+    'xj',
+    '--strip-components=1'
+  ])
+
   core.info(`Successfully extracted fiirefox ${version} to ${extPath}`)
 
   if (cacheEnabled) {

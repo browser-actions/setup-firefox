@@ -4,7 +4,6 @@ import cp from 'child_process'
 import * as installer from './installer'
 import {getPlatform} from './platform'
 import {LatestVersion} from './versions'
-import path from 'path'
 
 async function run(): Promise<void> {
   try {
@@ -16,7 +15,7 @@ async function run(): Promise<void> {
 
     const installDir = await installer.install(version, platform, language)
 
-    core.addPath(path.join(installDir))
+    core.addPath(installDir)
     core.info(`Successfully setup firefox version ${version}`)
 
     // output the version actually being used
