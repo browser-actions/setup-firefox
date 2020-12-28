@@ -40,7 +40,7 @@ export const getArch = (): Arch => {
     case 'x32':
       return Arch.I386
     case 'x64':
-      return Arch.ARM64
+      return Arch.AMD64
   }
   throw new Error(`Unsupported arch: ${arch}`)
 }
