@@ -1,3 +1,8 @@
-export const VERSION_LATEST_BETA = 'latest-beta'
-export const VERSION_LATEST_ESR = 'latest-esr'
-export const VERSION_LATEST = 'latest'
+export const LatestVersion = {
+  LATEST_BETA: 'latest-beta',
+  LATEST_ESR: 'latest-esr',
+  LATEST: 'latest'
+} as const
+
+// eslint-disable-next-line no-redeclare
+export type LatestVersion = typeof LatestVersion[keyof typeof LatestVersion]

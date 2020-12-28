@@ -1,5 +1,5 @@
 import {Platform, OS, Arch} from './platform'
-import * as versions from './versions'
+import {LatestVersion} from './versions'
 import * as tc from '@actions/tool-cache'
 import * as core from '@actions/core'
 
@@ -43,9 +43,9 @@ const makeDownloadURL = (
   language: string
 ): string => {
   if (
-    version === versions.VERSION_LATEST ||
-    version === versions.VERSION_LATEST_BETA ||
-    version === versions.VERSION_LATEST_ESR
+    version === LatestVersion.LATEST ||
+    version === LatestVersion.LATEST_BETA ||
+    version === LatestVersion.LATEST_ESR
   ) {
     return makeDownloaderDownloadURL(version, platform, language)
   }
@@ -53,7 +53,7 @@ const makeDownloadURL = (
 }
 
 const makeDownloaderDownloadURL = (
-  version: string,
+  version: LatestVersion,
   {os, arch}: Platform,
   language: string
 ): string => {
@@ -69,7 +69,19 @@ const makeDownloaderDownloadURL = (
     }
     throw new Error(`Unsupported firefox ${version} for platform ${os} ${arch}`)
   })()
-  return `https://download.mozilla.org/?product=firefox-${version}&os=${platform}&lang=${language}`
+
+  const product = (() => {
+    switch (version) {
+      case LatestVersion.LATEST:
+        return 'firefox-latest'
+      case LatestVersion.LATEST_BETA:
+        return 'firefox-beta-lates'
+      case LatestVersion.LATEST_ESR:
+        return 'firefox-esr-latest'
+    }
+  })()
+
+  return `https://download.mozilla.org/?product=${product}&os=${platform}&lang=${language}`
 }
 
 const makeArchiveDownloadURL = (

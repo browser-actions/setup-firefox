@@ -3,12 +3,12 @@ import * as io from '@actions/io'
 import cp from 'child_process'
 import * as installer from './installer'
 import {getPlatform} from './platform'
-import {VERSION_LATEST} from './versions'
+import {LatestVersion} from './versions'
 import path from 'path'
 
 async function run(): Promise<void> {
   try {
-    const version = core.getInput('firefox-version') || VERSION_LATEST
+    const version = core.getInput('firefox-version') || LatestVersion.LATEST
     const platform = getPlatform()
     const language = core.getInput('firefox-language') || 'en-US'
 
