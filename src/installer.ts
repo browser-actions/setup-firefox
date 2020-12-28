@@ -67,9 +67,7 @@ const makeDownloaderDownloadURL = (
     } else if (os === OS.WINDOWS && arch === Arch.AMD64) {
       return 'win64'
     }
-    throw new Error(
-      `Unsupported firefox ${version} for platform ${os} ${arch}`
-    )
+    throw new Error(`Unsupported firefox ${version} for platform ${os} ${arch}`)
   })()
   return `https://download.mozilla.org/?product=${version}&os=${platform}&lang=${language}`
 }
@@ -93,7 +91,7 @@ const makeArchiveDownloadURL = (
     } else if (os === OS.WINDOWS && arch === Arch.ARM64) {
       return 'win64-aarch64'
     }
-    throw new Error(`Unsupported platform ${os} ${arch}`)
+    throw new Error(`Unsupported firefox ${version} for platform ${os} ${arch}`)
   })()
 
   return `https://ftp.mozilla.org/pub/firefox/releases/${version}/${platform}/${language}/firefox-${version}.tar.bz2`
