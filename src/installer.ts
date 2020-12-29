@@ -1,6 +1,7 @@
 import { Platform } from "./platform";
 import { isLatestVersion } from "./versions";
 import { DownloadURLFactory } from "./DownloadURLFactory";
+import { ExtractorFactory } from "./ExtractorFactory";
 import * as tc from "@actions/tool-cache";
 import * as core from "@actions/core";
 
@@ -34,11 +35,9 @@ async function installForLinux(
 
   const archivePath = await tc.downloadTool(url);
   core.info("Extracting Firefox...");
-  const extPath = await tc.extractTar(archivePath, "", [
-    "xj",
-    "--strip-components=1",
-  ]);
-
+  const extPath = await new ExtractorFactory()
+    .create(platform)
+    .extract(archivePath);
   core.info(`Successfully extracted fiirefox ${version} to ${extPath}`);
 
   if (cacheEnabled) {

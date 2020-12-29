@@ -1,10 +1,7 @@
 import { OS, Arch } from "../src/platform";
-import {
-  UnsupportedPlatformError,
-  ArchiveDownloadURL,
-  LatestDownloadURL,
-} from "../src/DownloadURL";
+import { ArchiveDownloadURL, LatestDownloadURL } from "../src/DownloadURL";
 import { LatestVersion } from "../src/versions";
+import { UnsupportedPlatformError } from "../src/errors";
 
 describe("ArchiveDownloadURL", () => {
   describe.each([

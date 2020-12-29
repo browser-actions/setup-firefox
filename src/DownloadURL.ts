@@ -1,15 +1,6 @@
 import { Platform, OS, Arch } from "./platform";
 import { LatestVersion } from "./versions";
-
-export class UnsupportedPlatformError extends Error {
-  constructor(
-    private readonly version: string,
-    private readonly platform: Platform
-  ) {
-    super(`Unsupported platform ${platform.os} ${platform.arch}`);
-    this.name = "UnsupportedPlatform";
-  }
-}
+import { UnsupportedPlatformError } from "./errors";
 
 export default interface DownloadURL {
   getURL(): string;
@@ -45,7 +36,7 @@ export class ArchiveDownloadURL implements DownloadURL {
     } else if (os === OS.WINDOWS && arch === Arch.ARM64) {
       return "win64-aarch64";
     }
-    throw new UnsupportedPlatformError(this.version, { os, arch });
+    throw new UnsupportedPlatformError({ os, arch }, this.version);
   }
 
   private suffix(): string {
@@ -55,7 +46,7 @@ export class ArchiveDownloadURL implements DownloadURL {
     } else if (os === OS.LINUX) {
       return ".tar.bz2";
     }
-    throw new UnsupportedPlatformError(this.version, { os, arch });
+    throw new UnsupportedPlatformError({ os, arch }, this.version);
   }
 }
 
@@ -92,6 +83,6 @@ export class LatestDownloadURL implements DownloadURL {
     } else if (os === OS.LINUX && arch === Arch.AMD64) {
       return "linux64";
     }
-    throw new UnsupportedPlatformError(this.version, { os, arch });
+    throw new UnsupportedPlatformError({ os, arch }, this.version);
   }
 }
