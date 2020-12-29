@@ -1,0 +1,10 @@
+name: 'Setup Firefox'
+description: 'Install and setup Firefox'
+author: "Shin'ya Ueoka"
+inputs:
+  firefox-version:
+    description: 'The Firefox version to install and use.'
+
+runs:
+  using: 'node12'
+  main: 'index.js'
