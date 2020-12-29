@@ -24,6 +24,18 @@ jobs:
 
       # Test built action itself
       - uses: ./dist/
+      - run: |
+          firefox --version
+      - uses: ./dist/
+        with:
+          firefox-version: latest-esr
+      - run: |
+          firefox --version
+      - uses: ./dist/
+        with:
+          firefox-version: "84.0"
+      - run: |
+          firefox --version
 
   deploy:
     runs-on: ubuntu-latest
@@ -76,3 +88,15 @@ jobs:
     needs: [deploy]
     steps:
       - uses: ueokande/setup-firefox@latest
+      - run: |
+          firefox --version
+      - uses: ueokande/setup-firefox@latest
+        with:
+          firefox-version: latest-esr
+      - run: |
+          firefox --version
+      - uses: ueokande/setup-firefox@latest
+        with:
+          firefox-version: "84.0"
+      - run: |
+          firefox --version
