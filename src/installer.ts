@@ -65,7 +65,7 @@ const makeDownloaderDownloadURL = (
   const platform = (() => {
     if (os === OS.MACOS && arch === Arch.AMD64) {
       return "osx";
-    } else if (os === OS.LINUX && arch === Arch.I386) {
+    } else if (os === OS.LINUX && arch === Arch.I686) {
       return "linux";
     } else if (os === OS.LINUX && arch === Arch.AMD64) {
       return "linux64";
@@ -99,11 +99,11 @@ const makeArchiveDownloadURL = (
   const platform = ((): string => {
     if (os === OS.MACOS && arch === Arch.AMD64) {
       return "mac";
-    } else if (os === OS.LINUX && arch === Arch.I386) {
+    } else if (os === OS.LINUX && arch === Arch.I686) {
       return "linux-i686";
     } else if (os === OS.LINUX && arch === Arch.AMD64) {
       return "linux-x86_64";
-    } else if (os === OS.WINDOWS && arch === Arch.I386) {
+    } else if (os === OS.WINDOWS && arch === Arch.I686) {
       return "win32";
     } else if (os === OS.WINDOWS && arch === Arch.AMD64) {
       return "win64";
