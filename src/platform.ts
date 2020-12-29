@@ -28,6 +28,10 @@ export const getOS = (): OS => {
   switch (platform) {
     case "linux":
       return OS.LINUX;
+    case "darwin":
+      return OS.MACOS;
+    case "win32":
+      return OS.WINDOWS;
   }
   throw new Error(`Unsupported platform: ${platform}`);
 };
