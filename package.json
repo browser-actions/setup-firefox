@@ -26,9 +26,11 @@
   },
   "scripts": {
     "build": "ncc build src/index.ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "package": "cp action.yml README.md dist/",
-    "lint": "eslint --ext .ts src/",
-    "lint:fix": "eslint --fix --ext .ts src/"
+    "lint": "eslint --ext .ts src/ __test__/",
+    "lint:fix": "eslint --fix --ext .ts src/ __test__/"
   },
   "repository": {
     "type": "git",
