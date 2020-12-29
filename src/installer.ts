@@ -63,7 +63,7 @@ const makeDownloaderDownloadURL = (
   language: string
 ): string => {
   const platform = (() => {
-    if (os === OS.DARWIN && arch === Arch.AMD64) {
+    if (os === OS.MACOS && arch === Arch.AMD64) {
       return "osx";
     } else if (os === OS.LINUX && arch === Arch.I386) {
       return "linux";
@@ -97,7 +97,7 @@ const makeArchiveDownloadURL = (
   language: string
 ): string => {
   const platform = ((): string => {
-    if (os === OS.DARWIN && arch === Arch.AMD64) {
+    if (os === OS.MACOS && arch === Arch.AMD64) {
       return "mac";
     } else if (os === OS.LINUX && arch === Arch.I386) {
       return "linux-i686";

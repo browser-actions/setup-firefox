@@ -6,7 +6,7 @@ export type Platform = {
 };
 
 export const OS = {
-  DARWIN: "darwin",
+  MACOS: "macos",
   LINUX: "linux",
   WINDOWS: "windows",
 } as const;
