@@ -9,7 +9,7 @@ jobs:
       matrix:
         os: [ubuntu, macos]
     runs-on: ${{ matrix.os }}-latest
-    name: "Run on ${{ matrix.os }}"
+    name: "Build on ${{ matrix.os }}"
     steps:
       - uses: actions/checkout@v2
 
@@ -90,8 +90,12 @@ jobs:
           git push origin latest
 
   test-latest:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu, macos]
+    runs-on: ${{ matrix.os }}-latest
     needs: [deploy]
+    name: "Test latest release on ${{ matrix.os }}"
     steps:
       - uses: ueokande/setup-firefox@latest
       - run: |
