@@ -17,6 +17,18 @@ describe("ArchiveDownloadURL", () => {
       { os: OS.MACOS, arch: Arch.AMD64 },
       "https://ftp.mozilla.org/pub/firefox/releases/80.0/mac/en-US/Firefox%2080.0.dmg",
     ],
+    [
+      { os: OS.WINDOWS, arch: Arch.I686 },
+      "https://ftp.mozilla.org/pub/firefox/releases/80.0/win32/en-US/Firefox%20Setup%2080.0.exe",
+    ],
+    [
+      { os: OS.WINDOWS, arch: Arch.AMD64 },
+      "https://ftp.mozilla.org/pub/firefox/releases/80.0/win64/en-US/Firefox%20Setup%2080.0.exe",
+    ],
+    [
+      { os: OS.WINDOWS, arch: Arch.ARM64 },
+      "https://ftp.mozilla.org/pub/firefox/releases/80.0/win64-aarch64/en-US/Firefox%20Setup%2080.0.exe",
+    ],
   ])("platform %s", ({ os, arch }, expected) => {
     test(`returns URL ${expected}`, () => {
       const sut = new ArchiveDownloadURL("80.0", { os, arch }, "en-US");
@@ -24,12 +36,7 @@ describe("ArchiveDownloadURL", () => {
     });
   });
 
-  describe.each([
-    [OS.WINDOWS, Arch.AMD64],
-    [OS.WINDOWS, Arch.I686],
-    [OS.WINDOWS, Arch.ARM64],
-    [OS.MACOS, Arch.I686],
-  ])("platform %s %s", (os, arch) => {
+  describe.each([[OS.MACOS, Arch.I686]])("platform %s %s", (os, arch) => {
     test(`throws an error`, () => {
       const sut = new ArchiveDownloadURL("80.0", { os, arch }, "en-US");
       expect(() => sut.getURL()).toThrowError(UnsupportedPlatformError);
@@ -54,6 +61,16 @@ describe("LatestDownloadURL", () => {
       { os: OS.MACOS, arch: Arch.AMD64 },
       `https://download.mozilla.org/?product=firefox-esr-latest&os=osx&lang=en-US`,
     ],
+    [
+      LatestVersion.LATEST_ESR,
+      { os: OS.WINDOWS, arch: Arch.I686 },
+      `https://download.mozilla.org/?product=firefox-esr-latest&os=win&lang=en-US`,
+    ],
+    [
+      LatestVersion.LATEST_ESR,
+      { os: OS.WINDOWS, arch: Arch.AMD64 },
+      `https://download.mozilla.org/?product=firefox-esr-latest&os=win64&lang=en-US`,
+    ],
   ])("platform %s %s", (version, { os, arch }, expected) => {
     test(`returns URL ${expected}`, () => {
       const sut = new LatestDownloadURL(version, { os, arch }, "en-US");
@@ -62,8 +79,6 @@ describe("LatestDownloadURL", () => {
   });
 
   describe.each([
-    [OS.WINDOWS, Arch.AMD64],
-    [OS.WINDOWS, Arch.I686],
     [OS.MACOS, Arch.I686],
     [OS.MACOS, Arch.ARM64],
   ])("platform %s %s", (os, arch) => {
