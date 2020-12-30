@@ -55,7 +55,7 @@ export class LinuxInstaller implements Installer {
 export class MacOSInstaller implements Installer {
   async install(spec: InstallSpec): Promise<string> {
     const installPath = await this.download(spec);
-    return path.join(installPath, "Firefox.app", "Contents", "MacOS");
+    return path.join(installPath, "Contents", "MacOS");
   }
 
   async download({
@@ -79,6 +79,8 @@ export class MacOSInstaller implements Installer {
     core.info("Extracting Firefox...");
 
     const mountpoint = path.join("/Volumes", path.basename(archivePath));
+    const appPath = path.join(mountpoint, "Firefox.app");
+
     await exec.exec("hdiutil", [
       "attach",
       "-quiet",
@@ -88,10 +90,10 @@ export class MacOSInstaller implements Installer {
       mountpoint,
       archivePath,
     ]);
-    core.info(`Successfully extracted fiirefox ${version} to ${mountpoint}`);
+    core.info(`Successfully extracted fiirefox ${version} to ${appPath}`);
 
     core.info("Adding to the cache ...");
-    const cachedDir = await tc.cacheDir(mountpoint, "firefox", version);
+    const cachedDir = await tc.cacheDir(appPath, "firefox", version);
     core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
     return cachedDir;
   }
