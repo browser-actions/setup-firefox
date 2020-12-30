@@ -1,8 +1,7 @@
 import * as core from "@actions/core";
 import * as tc from "@actions/tool-cache";
+import * as exec from "@actions/exec";
 import path from "path";
-import util from "util";
-import cp from "child_process";
 import { Platform } from "./platform";
 import { DownloadURLFactory } from "./DownloadURLFactory";
 
@@ -80,11 +79,13 @@ export class MacOSInstaller implements Installer {
     core.info("Extracting Firefox...");
 
     const mountpoint = path.join("/Volumes", archivePath);
-    await util.promisify(cp.spawn)(
-      "hdiutil",
-      ["attach", "-noautofsck", "-noautoopen", "-mountpoint", mountpoint],
-      {}
-    );
+    await exec.exec("hdiutil", [
+      "attach",
+      "-noautofsck",
+      "-noautoopen",
+      "-mountpoint",
+      mountpoint,
+    ]);
     core.info(`Successfully extracted fiirefox ${version} to ${mountpoint}`);
 
     core.info("Adding to the cache ...");
