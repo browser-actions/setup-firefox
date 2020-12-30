@@ -81,6 +81,7 @@ export class MacOSInstaller implements Installer {
     const mountpoint = path.join("/Volumes", path.basename(archivePath));
     await exec.exec("hdiutil", [
       "attach",
+      "-quiet",
       "-noautofsck",
       "-noautoopen",
       "-mountpoint",
