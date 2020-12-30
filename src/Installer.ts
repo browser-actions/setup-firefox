@@ -78,7 +78,7 @@ export class MacOSInstaller implements Installer {
     const archivePath = await tc.downloadTool(url);
     core.info("Extracting Firefox...");
 
-    const mountpoint = path.join("/Volumes", archivePath);
+    const mountpoint = path.join("/Volumes", path.basename(archivePath));
     await exec.exec("hdiutil", [
       "attach",
       "-noautofsck",
