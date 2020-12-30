@@ -16,9 +16,7 @@ export class ArchiveDownloadURL implements DownloadURL {
   getURL(): string {
     return `https://ftp.mozilla.org/pub/firefox/releases/${
       this.version
-    }/${this.platformPart()}/${this.language}/firefox-${
-      this.version
-    }${this.suffix()}`;
+    }/${this.platformPart()}/${this.language}/${this.filename()}`;
   }
 
   private platformPart(): string {
@@ -39,12 +37,12 @@ export class ArchiveDownloadURL implements DownloadURL {
     throw new UnsupportedPlatformError({ os, arch }, this.version);
   }
 
-  private suffix(): string {
+  private filename(): string {
     const { os, arch } = this.platform;
     if (os === OS.MACOS) {
-      return ".dmg";
+      return `Firefox%20${this.version}.dmg`;
     } else if (os === OS.LINUX) {
-      return ".tar.bz2";
+      return `firefox-${this.version}.tar.bz2`;
     }
     throw new UnsupportedPlatformError({ os, arch }, this.version);
   }

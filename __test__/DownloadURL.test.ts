@@ -15,9 +15,9 @@ describe("ArchiveDownloadURL", () => {
     ],
     [
       { os: OS.MACOS, arch: Arch.AMD64 },
-      "https://ftp.mozilla.org/pub/firefox/releases/80.0/mac/en-US/firefox-80.0.dmg",
+      "https://ftp.mozilla.org/pub/firefox/releases/80.0/mac/en-US/Firefox%2080.0.dmg",
     ],
-  ])("platform %s %s", ({ os, arch }, expected) => {
+  ])("platform %s", ({ os, arch }, expected) => {
     test(`returns URL ${expected}`, () => {
       const sut = new ArchiveDownloadURL("80.0", { os, arch }, "en-US");
       expect(sut.getURL()).toEqual(expected);
