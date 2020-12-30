@@ -4930,6 +4930,292 @@ module.exports = v4;
 
 /***/ }),
 
+/***/ 647:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LatestDownloadURL = exports.ArchiveDownloadURL = void 0;
+const platform_1 = __webpack_require__(999);
+const versions_1 = __webpack_require__(296);
+const errors_1 = __webpack_require__(976);
+class ArchiveDownloadURL {
+    constructor(version, platform, language) {
+        this.version = version;
+        this.platform = platform;
+        this.language = language;
+    }
+    getURL() {
+        return `https://ftp.mozilla.org/pub/firefox/releases/${this.version}/${this.platformPart()}/${this.language}/${this.filename()}`;
+    }
+    platformPart() {
+        const { os, arch } = this.platform;
+        if (os === platform_1.OS.MACOS && arch === platform_1.Arch.AMD64) {
+            return "mac";
+        }
+        else if (os === platform_1.OS.LINUX && arch === platform_1.Arch.I686) {
+            return "linux-i686";
+        }
+        else if (os === platform_1.OS.LINUX && arch === platform_1.Arch.AMD64) {
+            return "linux-x86_64";
+        }
+        else if (os === platform_1.OS.WINDOWS && arch === platform_1.Arch.I686) {
+            return "win32";
+        }
+        else if (os === platform_1.OS.WINDOWS && arch === platform_1.Arch.AMD64) {
+            return "win64";
+        }
+        else if (os === platform_1.OS.WINDOWS && arch === platform_1.Arch.ARM64) {
+            return "win64-aarch64";
+        }
+        throw new errors_1.UnsupportedPlatformError({ os, arch }, this.version);
+    }
+    filename() {
+        const { os, arch } = this.platform;
+        if (os === platform_1.OS.MACOS) {
+            return `Firefox%20${this.version}.dmg`;
+        }
+        else if (os === platform_1.OS.LINUX) {
+            return `firefox-${this.version}.tar.bz2`;
+        }
+        throw new errors_1.UnsupportedPlatformError({ os, arch }, this.version);
+    }
+}
+exports.ArchiveDownloadURL = ArchiveDownloadURL;
+class LatestDownloadURL {
+    constructor(version, platform, language) {
+        this.version = version;
+        this.platform = platform;
+        this.language = language;
+    }
+    getURL() {
+        return `https://download.mozilla.org/?product=${this.productPart()}&os=${this.platformPart()}&lang=${this.language}`;
+    }
+    productPart() {
+        switch (this.version) {
+            case versions_1.LatestVersion.LATEST:
+                return "firefox-latest";
+            case versions_1.LatestVersion.LATEST_BETA:
+                return "firefox-beta-latest";
+            case versions_1.LatestVersion.LATEST_ESR:
+                return "firefox-esr-latest";
+        }
+    }
+    platformPart() {
+        const { os, arch } = this.platform;
+        if (os === platform_1.OS.MACOS && arch === platform_1.Arch.AMD64) {
+            return "osx";
+        }
+        else if (os === platform_1.OS.LINUX && arch === platform_1.Arch.I686) {
+            return "linux";
+        }
+        else if (os === platform_1.OS.LINUX && arch === platform_1.Arch.AMD64) {
+            return "linux64";
+        }
+        throw new errors_1.UnsupportedPlatformError({ os, arch }, this.version);
+    }
+}
+exports.LatestDownloadURL = LatestDownloadURL;
+
+
+/***/ }),
+
+/***/ 312:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.DownloadURLFactory = void 0;
+const DownloadURL_1 = __webpack_require__(647);
+const versions_1 = __webpack_require__(296);
+class DownloadURLFactory {
+    constructor(version, platform, language) {
+        this.version = version;
+        this.platform = platform;
+        this.language = language;
+    }
+    create() {
+        if (versions_1.isLatestVersion(this.version)) {
+            return new DownloadURL_1.LatestDownloadURL(this.version, this.platform, this.language);
+        }
+        return new DownloadURL_1.ArchiveDownloadURL(this.version, this.platform, this.language);
+    }
+}
+exports.DownloadURLFactory = DownloadURLFactory;
+
+
+/***/ }),
+
+/***/ 239:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.MacOSInstaller = exports.LinuxInstaller = void 0;
+const core = __importStar(__webpack_require__(186));
+const tc = __importStar(__webpack_require__(784));
+const exec = __importStar(__webpack_require__(514));
+const path_1 = __importDefault(__webpack_require__(622));
+const DownloadURLFactory_1 = __webpack_require__(312);
+class LinuxInstaller {
+    install(spec) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.download(spec);
+        });
+    }
+    download({ version, platform, language, }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const toolPath = tc.find("firefox", version);
+            if (toolPath) {
+                core.info(`Found in cache @ ${toolPath}`);
+                return toolPath;
+            }
+            core.info(`Attempting to download firefox ${version}...`);
+            const url = new DownloadURLFactory_1.DownloadURLFactory(version, platform, language)
+                .create()
+                .getURL();
+            core.info(`Acquiring ${version} from ${url}`);
+            const archivePath = yield tc.downloadTool(url);
+            core.info("Extracting Firefox...");
+            const extPath = yield tc.extractTar(archivePath, "", [
+                "xj",
+                "--strip-components=1",
+            ]);
+            core.info(`Successfully extracted fiirefox ${version} to ${extPath}`);
+            core.info("Adding to the cache ...");
+            const cachedDir = yield tc.cacheDir(extPath, "firefox", version);
+            core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
+            return cachedDir;
+        });
+    }
+}
+exports.LinuxInstaller = LinuxInstaller;
+class MacOSInstaller {
+    install(spec) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const installPath = yield this.download(spec);
+            return path_1.default.join(installPath, "Contents", "MacOS");
+        });
+    }
+    download({ version, platform, language, }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const toolPath = tc.find("firefox", version);
+            if (toolPath) {
+                core.info(`Found in cache @ ${toolPath}`);
+                return toolPath;
+            }
+            core.info(`Attempting to download firefox ${version}...`);
+            const url = new DownloadURLFactory_1.DownloadURLFactory(version, platform, language)
+                .create()
+                .getURL();
+            core.info(`Acquiring ${version} from ${url}`);
+            const archivePath = yield tc.downloadTool(url);
+            core.info("Extracting Firefox...");
+            const mountpoint = path_1.default.join("/Volumes", path_1.default.basename(archivePath));
+            const appPath = path_1.default.join(mountpoint, "Firefox.app");
+            yield exec.exec("hdiutil", [
+                "attach",
+                "-quiet",
+                "-noautofsck",
+                "-noautoopen",
+                "-mountpoint",
+                mountpoint,
+                archivePath,
+            ]);
+            core.info(`Successfully extracted fiirefox ${version} to ${appPath}`);
+            core.info("Adding to the cache ...");
+            const cachedDir = yield tc.cacheDir(appPath, "firefox", version);
+            core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
+            return cachedDir;
+        });
+    }
+}
+exports.MacOSInstaller = MacOSInstaller;
+
+
+/***/ }),
+
+/***/ 892:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const platform_1 = __webpack_require__(999);
+const Installer_1 = __webpack_require__(239);
+const errors_1 = __webpack_require__(976);
+class InstallerFactory {
+    create(platform) {
+        switch (platform.os) {
+            case platform_1.OS.LINUX:
+                return new Installer_1.LinuxInstaller();
+            case platform_1.OS.MACOS:
+                return new Installer_1.MacOSInstaller();
+        }
+        throw new errors_1.UnsupportedPlatformError(platform);
+    }
+}
+exports.default = InstallerFactory;
+
+
+/***/ }),
+
+/***/ 976:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UnsupportedPlatformError = void 0;
+class UnsupportedPlatformError extends Error {
+    constructor(platform, version) {
+        super(version
+            ? `Unsupported platform ${platform.os} ${platform.arch} for version ${version}`
+            : `Unsupported platform ${platform.os} ${platform.arch}`);
+        this.platform = platform;
+        this.version = version;
+        this.name = "UnsupportedPlatform";
+    }
+}
+exports.UnsupportedPlatformError = UnsupportedPlatformError;
+
+
+/***/ }),
+
 /***/ 144:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
@@ -4970,163 +5256,30 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(186));
 const io = __importStar(__webpack_require__(436));
 const child_process_1 = __importDefault(__webpack_require__(129));
-const installer = __importStar(__webpack_require__(574));
 const platform_1 = __webpack_require__(999);
 const versions_1 = __webpack_require__(296);
-function run() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const version = core.getInput("firefox-version") || versions_1.LatestVersion.LATEST;
-            const platform = platform_1.getPlatform();
-            const language = core.getInput("firefox-language") || "en-US";
-            core.info(`Setup firefox ${version} (${language})`);
-            const installDir = yield installer.install(version, platform, language);
-            core.addPath(installDir);
-            core.info(`Successfully setup firefox version ${version}`);
-            // output the version actually being used
-            const firefoxBin = yield io.which("firefox");
-            const fierfoxVersion = (child_process_1.default.execSync(`${firefoxBin} --version`) || "").toString();
-            core.info(fierfoxVersion);
-        }
-        catch (error) {
-            core.setFailed(error.message);
-        }
-    });
-}
-run();
-
-
-/***/ }),
-
-/***/ 574:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.install = void 0;
-const platform_1 = __webpack_require__(999);
-const versions_1 = __webpack_require__(296);
-const tc = __importStar(__webpack_require__(784));
-const core = __importStar(__webpack_require__(186));
-const install = (version, platform, language) => __awaiter(void 0, void 0, void 0, function* () {
-    return installForLinux(version, platform, language);
-});
-exports.install = install;
-function installForLinux(version, platform, language) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const cacheEnabled = versions_1.isLatestVersion(version);
-        if (cacheEnabled) {
-            const toolPath = tc.find("firefox", version);
-            if (toolPath) {
-                core.info(`Found in cache @ ${toolPath}`);
-                return toolPath;
-            }
-        }
-        core.info(`Attempting to download firefox ${version}...`);
-        const url = makeDownloadURL(version, platform, language);
-        core.info(`Acquiring ${version} from ${url}`);
-        const archivePath = yield tc.downloadTool(url);
-        core.info("Extracting Firefox...");
-        const extPath = yield tc.extractTar(archivePath, "", [
-            "xj",
-            "--strip-components=1",
-        ]);
-        core.info(`Successfully extracted fiirefox ${version} to ${extPath}`);
-        if (cacheEnabled) {
-            core.info("Adding to the cache ...");
-            const cachedDir = yield tc.cacheDir(extPath, "firefox", version);
-            core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
-        }
-        return extPath;
-    });
-}
-const makeDownloadURL = (version, platform, language) => {
-    if (versions_1.isLatestVersion(version)) {
-        return makeDownloaderDownloadURL(version, platform, language);
+const InstallerFactory_1 = __importDefault(__webpack_require__(892));
+const run = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const version = core.getInput("firefox-version") || versions_1.LatestVersion.LATEST;
+        const platform = platform_1.getPlatform();
+        const language = core.getInput("firefox-language") || "en-US";
+        core.info(`Setup firefox ${version} (${language})`);
+        const installDir = yield new InstallerFactory_1.default()
+            .create(platform)
+            .install({ version, platform, language });
+        core.addPath(installDir);
+        core.info(`Successfully setup firefox version ${version}`);
+        // output the version actually being used
+        const firefoxBin = yield io.which("firefox");
+        const fierfoxVersion = child_process_1.default.execSync(`${firefoxBin} --version`).toString();
+        core.info(fierfoxVersion);
     }
-    return makeArchiveDownloadURL(version, platform, language);
-};
-const makeDownloaderDownloadURL = (version, { os, arch }, language) => {
-    const platform = (() => {
-        if (os === platform_1.OS.DARWIN && arch === platform_1.Arch.AMD64) {
-            return "osx";
-        }
-        else if (os === platform_1.OS.LINUX && arch === platform_1.Arch.I386) {
-            return "linux";
-        }
-        else if (os === platform_1.OS.LINUX && arch === platform_1.Arch.AMD64) {
-            return "linux64";
-        }
-        else if (os === platform_1.OS.WINDOWS && arch === platform_1.Arch.AMD64) {
-            return "win64";
-        }
-        throw new Error(`Unsupported firefox ${version} for platform ${os} ${arch}`);
-    })();
-    const product = (() => {
-        switch (version) {
-            case versions_1.LatestVersion.LATEST:
-                return "firefox-latest";
-            case versions_1.LatestVersion.LATEST_BETA:
-                return "firefox-beta-lates";
-            case versions_1.LatestVersion.LATEST_ESR:
-                return "firefox-esr-latest";
-        }
-    })();
-    return `https://download.mozilla.org/?product=${product}&os=${platform}&lang=${language}`;
-};
-const makeArchiveDownloadURL = (version, { os, arch }, language) => {
-    const platform = (() => {
-        if (os === platform_1.OS.DARWIN && arch === platform_1.Arch.AMD64) {
-            return "mac";
-        }
-        else if (os === platform_1.OS.LINUX && arch === platform_1.Arch.I386) {
-            return "linux-i686";
-        }
-        else if (os === platform_1.OS.LINUX && arch === platform_1.Arch.AMD64) {
-            return "linux-x86_64";
-        }
-        else if (os === platform_1.OS.WINDOWS && arch === platform_1.Arch.I386) {
-            return "win32";
-        }
-        else if (os === platform_1.OS.WINDOWS && arch === platform_1.Arch.AMD64) {
-            return "win64";
-        }
-        else if (os === platform_1.OS.WINDOWS && arch === platform_1.Arch.ARM64) {
-            return "win64-aarch64";
-        }
-        throw new Error(`Unsupported firefox ${version} for platform ${os} ${arch}`);
-    })();
-    return `https://ftp.mozilla.org/pub/firefox/releases/${version}/${platform}/${language}/firefox-${version}.tar.bz2`;
-};
+    catch (error) {
+        core.setFailed(error.message);
+    }
+});
+run();
 
 
 /***/ }),
@@ -5143,13 +5296,13 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getPlatform = exports.getArch = exports.getOS = exports.Arch = exports.OS = void 0;
 const os_1 = __importDefault(__webpack_require__(87));
 exports.OS = {
-    DARWIN: "darwin",
+    MACOS: "macos",
     LINUX: "linux",
     WINDOWS: "windows",
 };
 exports.Arch = {
     AMD64: "amd64",
-    I386: "i386",
+    I686: "i686",
     ARM64: "arm64",
 };
 const getOS = () => {
@@ -5157,6 +5310,10 @@ const getOS = () => {
     switch (platform) {
         case "linux":
             return exports.OS.LINUX;
+        case "darwin":
+            return exports.OS.MACOS;
+        case "win32":
+            return exports.OS.WINDOWS;
     }
     throw new Error(`Unsupported platform: ${platform}`);
 };
@@ -5167,7 +5324,7 @@ const getArch = () => {
         case "arm64":
             return exports.Arch.ARM64;
         case "x32":
-            return exports.Arch.I386;
+            return exports.Arch.I686;
         case "x64":
             return exports.Arch.AMD64;
     }
