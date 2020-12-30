@@ -1,12 +1,12 @@
 import { Platform, OS } from "./platform";
-import Extractor, { LinuxExtractor } from "./Extractor";
+import Installer, { LinuxInstaller } from "./Installer";
 import { UnsupportedPlatformError } from "./errors";
 
-export class ExtractorFactory {
-  create(platform: Platform): Extractor {
+export default class InstallerFactory {
+  create(platform: Platform): Installer {
     switch (platform.os) {
       case OS.LINUX:
-        return new LinuxExtractor();
+        return new LinuxInstaller();
     }
     throw new UnsupportedPlatformError(platform);
   }
