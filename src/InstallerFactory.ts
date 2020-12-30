@@ -1,5 +1,5 @@
 import { Platform, OS } from "./platform";
-import Installer, { LinuxInstaller } from "./Installer";
+import Installer, { LinuxInstaller, MacOSInstaller } from "./Installer";
 import { UnsupportedPlatformError } from "./errors";
 
 export default class InstallerFactory {
@@ -7,6 +7,8 @@ export default class InstallerFactory {
     switch (platform.os) {
       case OS.LINUX:
         return new LinuxInstaller();
+      case OS.MACOS:
+        return new MacOSInstaller();
     }
     throw new UnsupportedPlatformError(platform);
   }

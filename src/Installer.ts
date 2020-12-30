@@ -1,5 +1,8 @@
 import * as core from "@actions/core";
 import * as tc from "@actions/tool-cache";
+import path from "path";
+import util from "util";
+import cp from "child_process";
 import { Platform } from "./platform";
 import { DownloadURLFactory } from "./DownloadURLFactory";
 
@@ -45,6 +48,47 @@ export class LinuxInstaller implements Installer {
 
     core.info("Adding to the cache ...");
     const cachedDir = await tc.cacheDir(extPath, "firefox", version);
+    core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
+    return cachedDir;
+  }
+}
+
+export class MacOSInstaller implements Installer {
+  async install(spec: InstallSpec): Promise<string> {
+    const installPath = await this.download(spec);
+    return path.join(installPath, "Firefox.app", "Contents", "MacOS");
+  }
+
+  async download({
+    version,
+    platform,
+    language,
+  }: InstallSpec): Promise<string> {
+    const toolPath = tc.find("firefox", version);
+    if (toolPath) {
+      core.info(`Found in cache @ ${toolPath}`);
+      return toolPath;
+    }
+    core.info(`Attempting to download firefox ${version}...`);
+
+    const url = new DownloadURLFactory(version, platform, language)
+      .create()
+      .getURL();
+    core.info(`Acquiring ${version} from ${url}`);
+
+    const archivePath = await tc.downloadTool(url);
+    core.info("Extracting Firefox...");
+
+    const mountpoint = path.join("/Volumes", archivePath);
+    await util.promisify(cp.spawn)(
+      "hdiutil",
+      ["attach", "-noautofsck", "-noautoopen", "-mountpoint", mountpoint],
+      {}
+    );
+    core.info(`Successfully extracted fiirefox ${version} to ${mountpoint}`);
+
+    core.info("Adding to the cache ...");
+    const cachedDir = await tc.cacheDir(mountpoint, "firefox", version);
     core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
     return cachedDir;
   }
