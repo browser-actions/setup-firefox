@@ -85,6 +85,7 @@ export class MacOSInstaller implements Installer {
       "-noautoopen",
       "-mountpoint",
       mountpoint,
+      archivePath,
     ]);
     core.info(`Successfully extracted fiirefox ${version} to ${mountpoint}`);
 
