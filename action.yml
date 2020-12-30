@@ -3,7 +3,7 @@ description: 'Install and setup Firefox'
 author: "Shin'ya Ueoka"
 inputs:
   firefox-version:
-    description: 'The Firefox version to install and use.'
+    description: 'The Firefox version to install and use. Examples: 84.0, 84.0.1, latest-esr'
 
 runs:
   using: 'node12'
