@@ -7,7 +7,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu, macos]
+        os: [ubuntu, macos, windows]
     runs-on: ${{ matrix.os }}-latest
     name: "Build on ${{ matrix.os }}"
     steps:
@@ -92,7 +92,7 @@ jobs:
   test-latest:
     strategy:
       matrix:
-        os: [ubuntu, macos]
+        os: [ubuntu, macos, windows]
     runs-on: ${{ matrix.os }}-latest
     needs: [deploy]
     name: "Test latest release on ${{ matrix.os }}"
