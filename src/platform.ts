@@ -6,7 +6,7 @@ export type Platform = {
 };
 
 export const OS = {
-  DARWIN: "darwin",
+  MACOS: "macos",
   LINUX: "linux",
   WINDOWS: "windows",
 } as const;
@@ -16,7 +16,7 @@ export type OS = typeof OS[keyof typeof OS];
 
 export const Arch = {
   AMD64: "amd64",
-  I386: "i386",
+  I686: "i686",
   ARM64: "arm64",
 } as const;
 
@@ -28,6 +28,10 @@ export const getOS = (): OS => {
   switch (platform) {
     case "linux":
       return OS.LINUX;
+    case "darwin":
+      return OS.MACOS;
+    case "win32":
+      return OS.WINDOWS;
   }
   throw new Error(`Unsupported platform: ${platform}`);
 };
@@ -38,7 +42,7 @@ export const getArch = (): Arch => {
     case "arm64":
       return Arch.ARM64;
     case "x32":
-      return Arch.I386;
+      return Arch.I686;
     case "x64":
       return Arch.AMD64;
   }

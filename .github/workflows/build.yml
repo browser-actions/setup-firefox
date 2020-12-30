@@ -5,9 +5,14 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu, macos]
+    runs-on: ${{ matrix.os }}-latest
+    name: "Build on ${{ matrix.os }}"
     steps:
       - uses: actions/checkout@v2
+
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -19,6 +24,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - run: yarn install --frozen-lockfile
+      - run: yarn test
       - run: yarn build
       - run: yarn package
 
@@ -84,8 +90,12 @@ jobs:
           git push origin latest
 
   test-latest:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu, macos]
+    runs-on: ${{ matrix.os }}-latest
     needs: [deploy]
+    name: "Test latest release on ${{ matrix.os }}"
     steps:
       - uses: ueokande/setup-firefox@latest
       - run: |
