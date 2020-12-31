@@ -38,13 +38,15 @@ export class ArchiveDownloadURL implements DownloadURL {
   }
 
   private filename(): string {
-    const { os, arch } = this.platform;
-    if (os === OS.MACOS) {
-      return `Firefox%20${this.version}.dmg`;
-    } else if (os === OS.LINUX) {
-      return `firefox-${this.version}.tar.bz2`;
+    const { os } = this.platform;
+    switch (os) {
+      case OS.MACOS:
+        return `Firefox%20${this.version}.dmg`;
+      case OS.LINUX:
+        return `firefox-${this.version}.tar.bz2`;
+      case OS.WINDOWS:
+        return `Firefox%20Setup%20${this.version}.exe`;
     }
-    throw new UnsupportedPlatformError({ os, arch }, this.version);
   }
 }
 
@@ -80,6 +82,11 @@ export class LatestDownloadURL implements DownloadURL {
       return "linux";
     } else if (os === OS.LINUX && arch === Arch.AMD64) {
       return "linux64";
+      // TODO Unable to launch silent install on latest version for windows
+      // } else if (os === OS.WINDOWS && arch === Arch.I686) {
+      //   return "win";
+      // } else if (os === OS.WINDOWS && arch === Arch.AMD64) {
+      //   return "win64";
     }
     throw new UnsupportedPlatformError({ os, arch }, this.version);
   }

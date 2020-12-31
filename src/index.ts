@@ -1,6 +1,5 @@
 import * as core from "@actions/core";
-import * as io from "@actions/io";
-import cp from "child_process";
+import * as exec from "@actions/exec";
 import { getPlatform } from "./platform";
 import { LatestVersion } from "./versions";
 import InstallerFactory from "./InstallerFactory";
@@ -20,10 +19,7 @@ const run = async (): Promise<void> => {
     core.addPath(installDir);
     core.info(`Successfully setup firefox version ${version}`);
 
-    // output the version actually being used
-    const firefoxBin = await io.which("firefox");
-    const fierfoxVersion = cp.execSync(`${firefoxBin} --version`).toString();
-    core.info(fierfoxVersion);
+    await exec.exec("firefox", ["--version"]);
   } catch (error) {
     core.setFailed(error.message);
   }
