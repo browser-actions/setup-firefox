@@ -4972,14 +4972,15 @@ class ArchiveDownloadURL {
         throw new errors_1.UnsupportedPlatformError({ os, arch }, this.version);
     }
     filename() {
-        const { os, arch } = this.platform;
-        if (os === platform_1.OS.MACOS) {
-            return `Firefox%20${this.version}.dmg`;
+        const { os } = this.platform;
+        switch (os) {
+            case platform_1.OS.MACOS:
+                return `Firefox%20${this.version}.dmg`;
+            case platform_1.OS.LINUX:
+                return `firefox-${this.version}.tar.bz2`;
+            case platform_1.OS.WINDOWS:
+                return `Firefox%20Setup%20${this.version}.exe`;
         }
-        else if (os === platform_1.OS.LINUX) {
-            return `firefox-${this.version}.tar.bz2`;
-        }
-        throw new errors_1.UnsupportedPlatformError({ os, arch }, this.version);
     }
 }
 exports.ArchiveDownloadURL = ArchiveDownloadURL;
@@ -5012,6 +5013,11 @@ class LatestDownloadURL {
         }
         else if (os === platform_1.OS.LINUX && arch === platform_1.Arch.AMD64) {
             return "linux64";
+            // TODO Unable to launch silent install on latest version for windows
+            // } else if (os === OS.WINDOWS && arch === Arch.I686) {
+            //   return "win";
+            // } else if (os === OS.WINDOWS && arch === Arch.AMD64) {
+            //   return "win64";
         }
         throw new errors_1.UnsupportedPlatformError({ os, arch }, this.version);
     }
@@ -5085,10 +5091,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.MacOSInstaller = exports.LinuxInstaller = void 0;
+exports.WindowsInstaller = exports.MacOSInstaller = exports.LinuxInstaller = void 0;
 const core = __importStar(__webpack_require__(186));
 const tc = __importStar(__webpack_require__(784));
+const io = __importStar(__webpack_require__(436));
 const exec = __importStar(__webpack_require__(514));
+const fs_1 = __importDefault(__webpack_require__(747));
 const path_1 = __importDefault(__webpack_require__(622));
 const DownloadURLFactory_1 = __webpack_require__(312);
 class LinuxInstaller {
@@ -5115,7 +5123,7 @@ class LinuxInstaller {
                 "xj",
                 "--strip-components=1",
             ]);
-            core.info(`Successfully extracted fiirefox ${version} to ${extPath}`);
+            core.info(`Successfully extracted firefox ${version} to ${extPath}`);
             core.info("Adding to the cache ...");
             const cachedDir = yield tc.cacheDir(extPath, "firefox", version);
             core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
@@ -5156,7 +5164,7 @@ class MacOSInstaller {
                 mountpoint,
                 archivePath,
             ]);
-            core.info(`Successfully extracted fiirefox ${version} to ${appPath}`);
+            core.info(`Successfully extracted firefox ${version} to ${appPath}`);
             core.info("Adding to the cache ...");
             const cachedDir = yield tc.cacheDir(appPath, "firefox", version);
             core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
@@ -5165,6 +5173,46 @@ class MacOSInstaller {
     }
 }
 exports.MacOSInstaller = MacOSInstaller;
+class WindowsInstaller {
+    install(spec) {
+        return this.download(spec);
+    }
+    download({ version, platform, language, }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const installPath = `C:\\Program Files\\Firefox_${version}`;
+            if (yield this.checkInstall(installPath)) {
+                core.info(`Already installed @ ${installPath}`);
+                return installPath;
+            }
+            core.info(`Attempting to download firefox ${version}...`);
+            const url = new DownloadURLFactory_1.DownloadURLFactory(version, platform, language)
+                .create()
+                .getURL();
+            core.info(`Acquiring ${version} from ${url}`);
+            const installerPath = yield tc.downloadTool(url);
+            yield io.mv(installerPath, `${installerPath}.exe`);
+            core.info("Extracting Firefox...");
+            yield exec.exec(installerPath, [
+                "/S",
+                `/InstallDirectoryName=${path_1.default.basename(installPath)}`,
+            ]);
+            core.info(`Successfully installed firefox ${version} to ${installPath}`);
+            return installPath;
+        });
+    }
+    checkInstall(dir) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield fs_1.default.promises.access(dir, fs_1.default.constants.F_OK);
+            }
+            catch (err) {
+                return false;
+            }
+            return true;
+        });
+    }
+}
+exports.WindowsInstaller = WindowsInstaller;
 
 
 /***/ }),
@@ -5177,7 +5225,6 @@ exports.MacOSInstaller = MacOSInstaller;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const platform_1 = __webpack_require__(999);
 const Installer_1 = __webpack_require__(239);
-const errors_1 = __webpack_require__(976);
 class InstallerFactory {
     create(platform) {
         switch (platform.os) {
@@ -5185,8 +5232,9 @@ class InstallerFactory {
                 return new Installer_1.LinuxInstaller();
             case platform_1.OS.MACOS:
                 return new Installer_1.MacOSInstaller();
+            case platform_1.OS.WINDOWS:
+                return new Installer_1.WindowsInstaller();
         }
-        throw new errors_1.UnsupportedPlatformError(platform);
     }
 }
 exports.default = InstallerFactory;
@@ -5254,8 +5302,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(186));
-const io = __importStar(__webpack_require__(436));
-const child_process_1 = __importDefault(__webpack_require__(129));
+const exec = __importStar(__webpack_require__(514));
 const platform_1 = __webpack_require__(999);
 const versions_1 = __webpack_require__(296);
 const InstallerFactory_1 = __importDefault(__webpack_require__(892));
@@ -5270,10 +5317,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
             .install({ version, platform, language });
         core.addPath(installDir);
         core.info(`Successfully setup firefox version ${version}`);
-        // output the version actually being used
-        const firefoxBin = yield io.which("firefox");
-        const fierfoxVersion = child_process_1.default.execSync(`${firefoxBin} --version`).toString();
-        core.info(fierfoxVersion);
+        yield exec.exec("firefox", ["--version"]);
     }
     catch (error) {
         core.setFailed(error.message);
