@@ -30,13 +30,19 @@ jobs:
 
       # Test built action itself
       - uses: ./dist/
+        # Latest version for windows is not currently supported
+        if: ${{ matrix.os != 'windows' }}
       - run: |
           firefox --version
+        if: ${{ matrix.os != 'windows' }}
       - uses: ./dist/
+        # Latest version for windows is not currently supported
+        if: ${{ matrix.os != 'windows' }}
         with:
           firefox-version: latest-esr
       - run: |
           firefox --version
+        if: ${{ matrix.os != 'windows' }}
       - uses: ./dist/
         with:
           firefox-version: "84.0"
@@ -98,13 +104,19 @@ jobs:
     name: "Test latest release on ${{ matrix.os }}"
     steps:
       - uses: ueokande/setup-firefox@latest
+        # Latest version for windows is not currently supported
+        if: ${{ matrix.os != 'windows' }}
       - run: |
           firefox --version
+        if: ${{ matrix.os != 'windows' }}
       - uses: ueokande/setup-firefox@latest
+        # Latest version for windows is not currently supported
+        if: ${{ matrix.os != 'windows' }}
         with:
           firefox-version: latest-esr
       - run: |
           firefox --version
+        if: ${{ matrix.os != 'windows' }}
       - uses: ueokande/setup-firefox@latest
         with:
           firefox-version: "84.0"
