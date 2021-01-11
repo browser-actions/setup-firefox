@@ -1,4 +1,4 @@
-![build-test](https://github.com/ueokande/setup-firefox/workflows/build-test/badge.svg)
+![build-test](https://github.com/browser-actions/setup-firefox/workflows/build-test/badge.svg)
 
 # setup-firefox
 
@@ -14,7 +14,7 @@ Basic usage:
 
 ```yaml
 steps:
-  - uses: ueokande/setup-firefox@latest
+  - uses: browser-actions/setup-firefox@latest
   - run: firefox --version
 ```
 
@@ -28,7 +28,7 @@ jobs:
     name: Firefox ${{ matrix.firefox }} sample
     steps:
       - name: Setup firefox
-        uses: ueokandee/setup-firefox@latest
+        uses: browser-actionse/setup-firefox@latest
         with:
           firefox-version: ${{ matrix.firefox }}
       - run: firefox --version
