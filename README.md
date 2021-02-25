@@ -28,7 +28,7 @@ jobs:
     name: Firefox ${{ matrix.firefox }} sample
     steps:
       - name: Setup firefox
-        uses: browser-actionse/setup-firefox@latest
+        uses: browser-actions/setup-firefox@latest
         with:
           firefox-version: ${{ matrix.firefox }}
       - run: firefox --version
