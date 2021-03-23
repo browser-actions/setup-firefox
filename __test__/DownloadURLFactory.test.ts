@@ -6,6 +6,8 @@ describe("DownloadURLFactory", () => {
   describe.each([
     ["80.0", ArchiveDownloadURL],
     ["latest", LatestDownloadURL],
+    ["latest-beta", LatestDownloadURL],
+    ["latest-devedition", LatestDownloadURL],
     ["latest-esr", LatestDownloadURL],
   ])("for version %s", (version, expected) => {
     test(`returns ${String(expected.name)}`, () => {
