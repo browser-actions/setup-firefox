@@ -4999,6 +4999,8 @@ class LatestDownloadURL {
                 return "firefox-latest";
             case versions_1.LatestVersion.LATEST_BETA:
                 return "firefox-beta-latest";
+            case versions_1.LatestVersion.LATEST_DEVEDITION:
+                return "firefox-devedition-latest";
             case versions_1.LatestVersion.LATEST_ESR:
                 return "firefox-esr-latest";
         }
@@ -5394,6 +5396,7 @@ exports.getPlatform = getPlatform;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.isLatestVersion = exports.LatestVersion = void 0;
 exports.LatestVersion = {
+    LATEST_DEVEDITION: "latest-devedition",
     LATEST_BETA: "latest-beta",
     LATEST_ESR: "latest-esr",
     LATEST: "latest",
@@ -5401,6 +5404,7 @@ exports.LatestVersion = {
 const isLatestVersion = (version) => {
     return (version === exports.LatestVersion.LATEST ||
         version === exports.LatestVersion.LATEST_BETA ||
+        version === exports.LatestVersion.LATEST_DEVEDITION ||
         version === exports.LatestVersion.LATEST_ESR);
 };
 exports.isLatestVersion = isLatestVersion;
