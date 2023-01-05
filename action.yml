@@ -6,5 +6,5 @@ inputs:
     description: 'The Firefox version to install and use. Examples: 84.0, 84.0.1, latest-esr'
 
 runs:
-  using: 'node16'
+  using: 'node18'
   main: 'index.js'
