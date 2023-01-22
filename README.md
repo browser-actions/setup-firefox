@@ -14,7 +14,7 @@ Basic usage:
 
 ```yaml
 steps:
-  - uses: browser-actions/setup-firefox@latest
+  - uses: browser-actions/setup-firefox@v1
   - run: firefox --version
 ```
 
@@ -28,7 +28,7 @@ jobs:
     name: Firefox ${{ matrix.firefox }} sample
     steps:
       - name: Setup firefox
-        uses: browser-actions/setup-firefox@latest
+        uses: browser-actions/setup-firefox@v1
         with:
           firefox-version: ${{ matrix.firefox }}
       - run: firefox --version
