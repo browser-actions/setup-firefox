@@ -2,17 +2,15 @@ name: 'build-test'
 on:
   pull_request:
   push:
+    branches-ignore:
+      - master
+  workflow_call:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [ubuntu, macos, windows]
-    runs-on: ${{ matrix.os }}-latest
-    name: "Build on ${{ matrix.os }}"
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -27,89 +25,29 @@ jobs:
       - run: yarn test
       - run: yarn build
       - run: yarn package
-
-      # Test built action itself
-      - uses: ./dist/
-        # Latest version for windows is not currently supported
-        if: ${{ matrix.os != 'windows' }}
-      - run: |
-          firefox --version
-        if: ${{ matrix.os != 'windows' }}
-      - uses: ./dist/
-        # Latest version for windows is not currently supported
-        if: ${{ matrix.os != 'windows' }}
+      - uses: actions/upload-artifact@v3
         with:
-          firefox-version: latest-esr
-      - run: |
-          firefox --version
-        if: ${{ matrix.os != 'windows' }}
-      - uses: ./dist/
-        with:
-          firefox-version: "84.0"
-      - run: |
-          firefox --version
+          name: dist
+          path: ./dist/
 
-  deploy:
-    runs-on: ubuntu-latest
+  test:
     needs: [build]
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - uses: actions/checkout@v3
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v3
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - uses: actions/checkout@v3
-        with:
-          ref: 'latest'
-          path: 'dist'
-
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
-      - run: yarn package
-      - name: Setup git
-        run: |
-          git config --global user.name "Shin'ya Ueoka"
-          git config --global user.email "ueokande@i-beam.org"
-
-          cat >$HOME/.netrc <<EOF
-          machine github.com
-          login ueokande
-          password ${GITHUB_TOKEN}
-          EOF
-
-      - name: Deploy to latest branch
-        working-directory: ./dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Abort job successfully when no scripts updated
-          test -z "$(git status --short)" && exit 0
-
-          git add .
-          git commit --message "Release for ${GITHUB_SHA}"
-          git push origin latest
-
-  test-latest:
     strategy:
       matrix:
         os: [ubuntu, macos, windows]
     runs-on: ${{ matrix.os }}-latest
-    needs: [deploy]
-    name: "Test latest release on ${{ matrix.os }}"
     steps:
-      - uses: browser-actions/setup-firefox@latest
+      - uses: actions/download-artifact@v3
+        with:
+          name: dist
+
+      - uses: ./
         # Latest version for windows is not currently supported
         if: ${{ matrix.os != 'windows' }}
       - run: |
           firefox --version
         if: ${{ matrix.os != 'windows' }}
-      - uses: browser-actions/setup-firefox@latest
+      - uses: ./
         # Latest version for windows is not currently supported
         if: ${{ matrix.os != 'windows' }}
         with:
@@ -117,7 +55,7 @@ jobs:
       - run: |
           firefox --version
         if: ${{ matrix.os != 'windows' }}
-      - uses: browser-actions/setup-firefox@latest
+      - uses: ./
         with:
           firefox-version: "84.0"
       - run: |
