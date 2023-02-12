@@ -4,6 +4,10 @@ import { getPlatform } from "./platform";
 import { LatestVersion } from "./versions";
 import InstallerFactory from "./InstallerFactory";
 
+const hasErrorMessage = (e: unknown): e is { message: string | Error } => {
+  return typeof e === "object" && e !== null && "message" in e;
+};
+
 const run = async (): Promise<void> => {
   try {
     const version = core.getInput("firefox-version") || LatestVersion.LATEST;
@@ -21,7 +25,11 @@ const run = async (): Promise<void> => {
 
     await exec.exec("firefox", ["--version"]);
   } catch (error) {
-    core.setFailed(error.message);
+    if (hasErrorMessage(error)) {
+      core.setFailed(error.message);
+    } else {
+      core.setFailed(String(error));
+    }
   }
 };
 
