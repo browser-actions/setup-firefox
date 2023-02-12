@@ -23,7 +23,7 @@ const commonTestVersion = async (bin: string): Promise<string> => {
   const output = await exec.getExecOutput(`"${bin}"`, ["--version"]);
   if (output.exitCode !== 0) {
     throw new Error(
-      `firefox exit with exit code ${output.exitCode}: ${output.stderr}`
+      `firefox exits with status ${output.exitCode}: ${output.stderr}`
     );
   }
   if (!output.stdout.startsWith("Mozilla Firefox ")) {
