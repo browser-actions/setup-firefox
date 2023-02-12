@@ -6,7 +6,7 @@ export const LatestVersion = {
 } as const;
 
 // eslint-disable-next-line no-redeclare
-export type LatestVersion = typeof LatestVersion[keyof typeof LatestVersion];
+export type LatestVersion = (typeof LatestVersion)[keyof typeof LatestVersion];
 
 export const isLatestVersion = (version: string): version is LatestVersion => {
   return (
