@@ -25,6 +25,7 @@ const run = async (): Promise<void> => {
       path.join(installDir, "firefox")
     );
     core.info(`Successfully setup firefox version ${actualVersion}`);
+    core.setOutput("firefox-version", actualVersion);
   } catch (error) {
     if (hasErrorMessage(error)) {
       core.setFailed(error.message);
