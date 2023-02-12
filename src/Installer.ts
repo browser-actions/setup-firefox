@@ -15,7 +15,22 @@ export type InstallSpec = {
 
 export default interface Installer {
   install(spec: InstallSpec): Promise<string>;
+
+  testVersion(bin: string): Promise<string>;
 }
+
+const commonTestVersion = async (bin: string): Promise<string> => {
+  const output = await exec.getExecOutput(bin, ["--version"]);
+  if (output.exitCode !== 0) {
+    throw new Error(
+      `firefox exit with exit code ${output.exitCode}: ${output.stderr}`
+    );
+  }
+  if (!output.stdout.startsWith("Mozilla Firefox ")) {
+    throw new Error(`firefox outputs unexpected results: ${output.stdout}`);
+  }
+  return output.stdout.trimEnd().replace("Mozilla Firefox ", "");
+};
 
 export class LinuxInstaller implements Installer {
   async install(spec: InstallSpec): Promise<string> {
@@ -52,6 +67,8 @@ export class LinuxInstaller implements Installer {
     core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
     return cachedDir;
   }
+
+  testVersion = commonTestVersion;
 }
 
 export class MacOSInstaller implements Installer {
@@ -99,6 +116,8 @@ export class MacOSInstaller implements Installer {
     core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
     return cachedDir;
   }
+
+  testVersion = commonTestVersion;
 }
 
 export class WindowsInstaller implements Installer {
@@ -145,4 +164,6 @@ export class WindowsInstaller implements Installer {
     }
     return true;
   }
+
+  testVersion = commonTestVersion;
 }
