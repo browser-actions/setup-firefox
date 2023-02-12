@@ -1,5 +1,5 @@
+import * as path from "path";
 import * as core from "@actions/core";
-import * as exec from "@actions/exec";
 import { getPlatform } from "./platform";
 import { LatestVersion } from "./versions";
 import InstallerFactory from "./InstallerFactory";
@@ -16,14 +16,16 @@ const run = async (): Promise<void> => {
 
     core.info(`Setup firefox ${version} (${language})`);
 
-    const installDir = await new InstallerFactory()
-      .create(platform)
-      .install({ version, platform, language });
+    const installer = new InstallerFactory().create(platform);
+    const installDir = await installer.install({ version, platform, language });
 
     core.addPath(installDir);
-    core.info(`Successfully setup firefox version ${version}`);
 
-    await exec.exec("firefox", ["--version"]);
+    const actualVersion = await installer.testVersion(
+      path.join(installDir, "firefox")
+    );
+    core.info(`Successfully setup firefox version ${actualVersion}`);
+    core.setOutput("firefox-version", actualVersion);
   } catch (error) {
     if (hasErrorMessage(error)) {
       core.setFailed(error.message);

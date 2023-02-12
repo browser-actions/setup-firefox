@@ -4,7 +4,9 @@ author: "Shin'ya Ueoka"
 inputs:
   firefox-version:
     description: 'The Firefox version to install and use. Examples: 84.0, 84.0.1, latest-esr'
-
+outputs:
+  firefox-version:
+    description: 'The installed Firefox version. Useful when given a latest version.'
 runs:
   using: 'node16'
   main: 'index.js'
