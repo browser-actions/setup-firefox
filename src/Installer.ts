@@ -20,7 +20,7 @@ export default interface Installer {
 }
 
 const commonTestVersion = async (bin: string): Promise<string> => {
-  const output = await exec.getExecOutput(bin, ["--version"]);
+  const output = await exec.getExecOutput(`"${bin}"`, ["--version"]);
   if (output.exitCode !== 0) {
     throw new Error(
       `firefox exit with exit code ${output.exitCode}: ${output.stderr}`
