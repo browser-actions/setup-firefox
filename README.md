@@ -18,6 +18,7 @@ steps:
   - run: firefox --version
 ```
 
+Use in the matrix:
 ```yaml
 jobs:
   build:
@@ -28,10 +29,13 @@ jobs:
     name: Firefox ${{ matrix.firefox }} sample
     steps:
       - name: Setup firefox
+        id: setup-firefox
         uses: browser-actions/setup-firefox@v1
         with:
           firefox-version: ${{ matrix.firefox }}
-      - run: firefox --version
+      - run: |
+          echo Installed firefox versions: ${{ steps.setup-firefox.outputs.firefox-version }}
+          firefox --version
 ```
 
 ## License
