@@ -10,7 +10,7 @@
     "@actions/tool-cache": "^2.0.1"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.23",
+    "@types/jest": "^29.4.0",
     "@types/node": "^18.13.0",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.31.1",
