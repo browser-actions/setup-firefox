@@ -71,6 +71,8 @@ export class LatestDownloadURL implements DownloadURL {
         return "firefox-beta-latest";
       case LatestVersion.LATEST_DEVEDITION:
         return "firefox-devedition-latest";
+      case LatestVersion.LATEST_NIGHTLY:
+        return "firefox-nightly-latest";
       case LatestVersion.LATEST_ESR:
         return "firefox-esr-latest";
     }
