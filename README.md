@@ -1,4 +1,4 @@
-![build-test](https://github.com/browser-actions/setup-firefox/workflows/build-test/badge.svg)
+![build-test](https://github.com/itsjwala/setup-firefox/workflows/build-test/badge.svg)
 
 # setup-firefox
 
@@ -14,7 +14,7 @@ Basic usage:
 
 ```yaml
 steps:
-  - uses: browser-actions/setup-firefox@v1
+  - uses: itsjwala/setup-firefox@v1
   - run: firefox --version
 ```
 
@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: Setup firefox
         id: setup-firefox
-        uses: browser-actions/setup-firefox@v1
+        uses: itsjwala/setup-firefox@v1
         with:
           firefox-version: ${{ matrix.firefox }}
       - run: |

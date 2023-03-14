@@ -1,6 +1,6 @@
 {
   "name": "setup-firefox",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Set up your GitHub Actions workflow with a specific version of firefox",
   "main": "dist/index.js",
   "dependencies": {
@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/browser-actions/setup-firefox.git"
+    "url": "git+https://github.com/itsjwala/setup-firefox.git"
   },
   "keywords": [
     "actions",
@@ -46,7 +46,7 @@
   "author": "Shin'ya Ueoka",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/browser-actions/setup-firefox/issues"
+    "url": "https://github.com/itsjwala/setup-firefox/issues"
   },
-  "homepage": "https://github.com/browser-actions/setup-firefox#readme"
+  "homepage": "https://github.com/itsjwala/setup-firefox#readme"
 }
