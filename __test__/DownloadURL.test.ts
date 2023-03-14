@@ -62,6 +62,11 @@ describe("LatestDownloadURL", () => {
       `https://download.mozilla.org/?product=firefox-devedition-latest&os=linux64&lang=en-US`,
     ],
     [
+      LatestVersion.LATEST_NIGHTLY,
+      { os: OS.LINUX, arch: Arch.AMD64 },
+      `https://download.mozilla.org/?product=firefox-nightly-latest&os=linux64&lang=en-US`,
+    ],
+    [
       LatestVersion.LATEST_ESR,
       { os: OS.MACOS, arch: Arch.AMD64 },
       `https://download.mozilla.org/?product=firefox-esr-latest&os=osx&lang=en-US`,

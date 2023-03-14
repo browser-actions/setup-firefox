@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        firefox: [ '84.0', 'latest-beta', 'latest-devedition', 'latest-esr', 'latest' ]
+        firefox: [ '84.0', 'latest-beta', 'latest-devedition', 'latest-nightly', 'latest-esr', 'latest' ]
     name: Firefox ${{ matrix.firefox }} sample
     steps:
       - name: Setup firefox
@@ -41,4 +41,3 @@ jobs:
 ## License
 
 [MIT](LICENSE)
-
