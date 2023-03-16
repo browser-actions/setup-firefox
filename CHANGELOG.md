@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.1.0...setup-firefox-v1.1.1) (2023-03-16)
+
+
+### Bug Fixes
+
+* **deps:** bump @actions/io from 1.1.2 to 1.1.3 ([#412](https://github.com/browser-actions/setup-firefox/issues/412)) ([9f159e2](https://github.com/browser-actions/setup-firefox/commit/9f159e22432daecfcb5a1e8a2ee7d71bd3149437))
+
 ## [1.1.0](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.0.1...setup-firefox-v1.1.0) (2023-02-12)
 
 
