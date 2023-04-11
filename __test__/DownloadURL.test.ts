@@ -66,6 +66,16 @@ describe("LatestDownloadURL", () => {
       { os: OS.MACOS, arch: Arch.AMD64 },
       `https://download.mozilla.org/?product=firefox-esr-latest&os=osx&lang=en-US`,
     ],
+    [
+      LatestVersion.LATEST_ESR,
+      { os: OS.WINDOWS, arch: Arch.I686 },
+      `https://download.mozilla.org/?product=firefox-esr-latest&os=win&lang=en-US`,
+    ],
+    [
+      LatestVersion.LATEST_ESR,
+      { os: OS.WINDOWS, arch: Arch.AMD64 },
+      `https://download.mozilla.org/?product=firefox-esr-latest&os=win64&lang=en-US`,
+    ],
   ])("platform %s %s", (version, { os, arch }, expected) => {
     test(`returns URL ${expected}`, () => {
       const sut = new LatestDownloadURL(version, { os, arch }, "en-US");
@@ -74,8 +84,6 @@ describe("LatestDownloadURL", () => {
   });
 
   describe.each([
-    [OS.WINDOWS, Arch.AMD64],
-    [OS.WINDOWS, Arch.I686],
     [OS.MACOS, Arch.I686],
     [OS.MACOS, Arch.ARM64],
   ])("platform %s %s", (os, arch) => {
