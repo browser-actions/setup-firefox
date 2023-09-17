@@ -38,19 +38,13 @@ jobs:
           name: dist
 
       - uses: ./
-        # Latest version for windows is not currently supported
-        if: ${{ matrix.os != 'windows' }}
       - run: |
           firefox --version
-        if: ${{ matrix.os != 'windows' }}
       - uses: ./
-        # Latest version for windows is not currently supported
-        if: ${{ matrix.os != 'windows' }}
         with:
           firefox-version: latest-esr
       - run: |
           firefox --version
-        if: ${{ matrix.os != 'windows' }}
       - uses: ./
         with:
           firefox-version: "84.0"

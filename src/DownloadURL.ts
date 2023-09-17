@@ -84,11 +84,10 @@ export class LatestDownloadURL implements DownloadURL {
       return "linux";
     } else if (os === OS.LINUX && arch === Arch.AMD64) {
       return "linux64";
-      // TODO Unable to launch silent install on latest version for windows
-      // } else if (os === OS.WINDOWS && arch === Arch.I686) {
-      //   return "win";
-      // } else if (os === OS.WINDOWS && arch === Arch.AMD64) {
-      //   return "win64";
+    } else if (os === OS.WINDOWS && arch === Arch.I686) {
+      return "win";
+    } else if (os === OS.WINDOWS && arch === Arch.AMD64) {
+      return "win64";
     }
     throw new UnsupportedPlatformError({ os, arch }, this.version);
   }
