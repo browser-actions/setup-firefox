@@ -9,7 +9,7 @@ export class DownloadURLFactory {
   constructor(
     private readonly version: string,
     private readonly platform: Platform,
-    private readonly language: string
+    private readonly language: string,
   ) {}
   create(): DownloadURL {
     if (isLatestVersion(this.version)) {
