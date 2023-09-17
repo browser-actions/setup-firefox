@@ -22,7 +22,7 @@ const run = async (): Promise<void> => {
     core.addPath(installDir);
 
     const actualVersion = await installer.testVersion(
-      path.join(installDir, "firefox")
+      path.join(installDir, "firefox"),
     );
     core.info(`Successfully setup firefox version ${actualVersion}`);
     core.setOutput("firefox-version", actualVersion);

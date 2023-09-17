@@ -10,7 +10,7 @@ export class ArchiveDownloadURL implements DownloadURL {
   constructor(
     private readonly version: string,
     private readonly platform: Platform,
-    private readonly language: string
+    private readonly language: string,
   ) {}
 
   getURL(): string {
@@ -54,7 +54,7 @@ export class LatestDownloadURL implements DownloadURL {
   constructor(
     private readonly version: LatestVersion,
     private readonly platform: Platform,
-    private readonly language: string
+    private readonly language: string,
   ) {}
 
   getURL(): string {

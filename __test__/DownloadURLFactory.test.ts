@@ -14,7 +14,7 @@ describe("DownloadURLFactory", () => {
       const sut = new DownloadURLFactory(
         version,
         { os: OS.LINUX, arch: Arch.AMD64 },
-        "en-US"
+        "en-US",
       );
       expect(sut.create()).toBeInstanceOf(expected);
     });

@@ -91,7 +91,7 @@ describe("LatestDownloadURL", () => {
       const sut = new LatestDownloadURL(
         LatestVersion.LATEST,
         { os, arch },
-        "en-US"
+        "en-US",
       );
       expect(() => sut.getURL()).toThrowError(UnsupportedPlatformError);
     });
