@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.1.1...setup-firefox-v1.2.0) (2023-09-17)
+
+
+### Features
+
+* restore Windows support ([#422](https://github.com/browser-actions/setup-firefox/issues/422)) ([6013839](https://github.com/browser-actions/setup-firefox/commit/6013839547aee35d36b4e705c9c044d7c789bb5b))
+
+
+### Bug Fixes
+
+* **deps:** bump the actions group with 1 update ([#448](https://github.com/browser-actions/setup-firefox/issues/448)) ([b7727a2](https://github.com/browser-actions/setup-firefox/commit/b7727a275849f856e9b379f6cd3b1c3009f0fa72))
+
 ## [1.1.1](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.1.0...setup-firefox-v1.1.1) (2023-03-16)
 
 
