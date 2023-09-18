@@ -6,6 +6,7 @@ import fs from "fs";
 import path from "path";
 import { Platform } from "./platform";
 import { DownloadURLFactory } from "./DownloadURLFactory";
+import { LatestVersion } from "./versions";
 
 export type InstallSpec = {
   version: string;
@@ -98,7 +99,13 @@ export class MacOSInstaller implements Installer {
     core.info("Extracting Firefox...");
 
     const mountpoint = path.join("/Volumes", path.basename(archivePath));
-    const appPath = path.join(mountpoint, "Firefox.app");
+    const appPath = (() => {
+      if (version === LatestVersion.LATEST_NIGHTLY) {
+        return path.join(mountpoint, "Firefox Nightly.app");
+      } else {
+        return path.join(mountpoint, "Firefox.app");
+      }
+    })();
 
     await exec.exec("hdiutil", [
       "attach",
