@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.2.0...setup-firefox-v1.3.0) (2023-09-18)
+
+
+### Features
+
+* firefox nightly ([#455](https://github.com/browser-actions/setup-firefox/issues/455)) ([b638071](https://github.com/browser-actions/setup-firefox/commit/b638071cda49366abcca9eb674072123f5c5b34e))
+
 ## [1.2.0](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.1.1...setup-firefox-v1.2.0) (2023-09-17)
 
 
