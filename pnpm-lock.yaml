@@ -20,8 +20,8 @@ dependencies:
 
 devDependencies:
   '@types/jest':
-    specifier: ^29.5.5
-    version: 29.5.5
+    specifier: ^29.5.7
+    version: 29.5.7
   '@types/node':
     specifier: ^20.6.2
     version: 20.6.2
@@ -863,8 +863,8 @@ packages:
       '@types/istanbul-lib-report': 3.0.0
     dev: true
 
-  /@types/jest@29.5.5:
-    resolution: {integrity: sha512-ebylz2hnsWR9mYvmBFbXJXr+33UPc4+ZdxyDXh5w0FlPBTfCVN3wPL+kuOiQt3xvrK419v7XWeAs+AeOksafXg==}
+  /@types/jest@29.5.7:
+    resolution: {integrity: sha512-HLyetab6KVPSiF+7pFcUyMeLsx25LDNDemw9mGsJBkai/oouwrjTycocSDYopMEwFhN2Y4s9oPyOCZNofgSt2g==}
     dependencies:
       expect: 29.7.0
       pretty-format: 29.7.0
@@ -886,8 +886,8 @@ packages:
     resolution: {integrity: sha512-7aqorHYgdNO4DM36stTiGO3DvKoex9TQRwsJU6vMaFGyqpBA1MNZkz+PG3gaNUPpTAOYhT1WR7M1JyA3fbS9Cw==}
     dev: true
 
-  /@types/stack-utils@2.0.1:
-    resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
+  /@types/stack-utils@2.0.2:
+    resolution: {integrity: sha512-g7CK9nHdwjK2n0ymT2CW698FuWJRIx+RP6embAzZ2Qi8/ilIrA1Imt2LVSeHUzKvpoi7BhmmQcXz95eS0f2JXw==}
     dev: true
 
   /@types/yargs-parser@21.0.0:
@@ -2386,7 +2386,7 @@ packages:
     dependencies:
       '@babel/code-frame': 7.22.13
       '@jest/types': 29.6.3
-      '@types/stack-utils': 2.0.1
+      '@types/stack-utils': 2.0.2
       chalk: 4.1.2
       graceful-fs: 4.2.11
       micromatch: 4.0.5
