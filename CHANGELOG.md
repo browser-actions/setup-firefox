@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.3.0...setup-firefox-v1.4.0) (2023-11-11)
+
+
+### Features
+
+* output installed binary path ([#493](https://github.com/browser-actions/setup-firefox/issues/493)) ([e16c07e](https://github.com/browser-actions/setup-firefox/commit/e16c07ebedc21f9a09aabcb5b081200bb61fb309))
+
 ## [1.3.0](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.2.0...setup-firefox-v1.3.0) (2023-09-18)
 
 
