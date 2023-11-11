@@ -35,7 +35,7 @@ jobs:
           firefox-version: ${{ matrix.firefox }}
       - run: |
           echo Installed firefox versions: ${{ steps.setup-firefox.outputs.firefox-version }}
-          firefox --version
+          ${{ steps.setup-firefox.outputs.firefox-path }} --version
 ```
 
 ## License
