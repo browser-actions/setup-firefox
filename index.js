@@ -7645,9 +7645,11 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         const installer = new InstallerFactory_1.default().create(platform);
         const installDir = yield installer.install({ version, platform, language });
         core.addPath(installDir);
-        const actualVersion = yield installer.testVersion(path.join(installDir, "firefox"));
-        core.info(`Successfully setup firefox version ${actualVersion}`);
-        core.setOutput("firefox-version", actualVersion);
+        const installedBinPath = path.join(installDir, "firefox");
+        const installedVersion = yield installer.testVersion(installedBinPath);
+        core.info(`Successfully setup firefox version ${installedVersion}`);
+        core.setOutput("firefox-version", installedVersion);
+        core.setOutput("firefox-path", installedBinPath);
     }
     catch (error) {
         if (hasErrorMessage(error)) {

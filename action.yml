@@ -7,6 +7,8 @@ inputs:
 outputs:
   firefox-version:
     description: 'The installed Firefox version. Useful when given a latest version.'
+  firefox-path:
+    description: 'The installed Firefox path.'
 runs:
   using: 'node16'
   main: 'index.js'
