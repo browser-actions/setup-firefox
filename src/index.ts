@@ -21,11 +21,11 @@ const run = async (): Promise<void> => {
 
     core.addPath(installDir);
 
-    const actualVersion = await installer.testVersion(
-      path.join(installDir, "firefox"),
-    );
-    core.info(`Successfully setup firefox version ${actualVersion}`);
-    core.setOutput("firefox-version", actualVersion);
+    const installedBinPath = path.join(installDir, "firefox");
+    const installedVersion = await installer.testVersion(installedBinPath);
+    core.info(`Successfully setup firefox version ${installedVersion}`);
+    core.setOutput("firefox-version", installedVersion);
+    core.setOutput("firefox-path", installedBinPath);
   } catch (error) {
     if (hasErrorMessage(error)) {
       core.setFailed(error.message);
