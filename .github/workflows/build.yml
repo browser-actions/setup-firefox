@@ -50,3 +50,8 @@ jobs:
           firefox-version: "84.0"
       - run: |
           firefox --version
+      - uses: ./
+        with:
+          firefox-version: "devedition-84.b1"
+      - run: |
+          firefox-developer --version
