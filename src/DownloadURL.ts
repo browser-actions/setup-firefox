@@ -25,9 +25,11 @@ export class ArchiveDownloadURL implements DownloadURL {
     switch (productName) {
       case "firefox":
         return "firefox";
+      case "beta":
+        return "firefox";
       case "devedition":
         return "devedition";
-      default: // nightly, beta, esr are unsupported
+      default: // nightly, esr are unsupported
         return "firefox";
     }
   }

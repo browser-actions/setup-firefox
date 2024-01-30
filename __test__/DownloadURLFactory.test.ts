@@ -6,6 +6,7 @@ describe("DownloadURLFactory", () => {
   describe.each([
     ["80.0", ArchiveDownloadURL],
     ["firefox-80.0", ArchiveDownloadURL],
+    ["beta-80.0b1", ArchiveDownloadURL],
     ["devedition-80.0b1", ArchiveDownloadURL],
     ["latest", LatestDownloadURL],
     ["latest-beta", LatestDownloadURL],
