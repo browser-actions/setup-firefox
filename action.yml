@@ -8,5 +8,5 @@ outputs:
   firefox-version:
     description: 'The installed Firefox version. Useful when given a latest version.'
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'index.js'
