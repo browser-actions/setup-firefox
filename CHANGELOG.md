@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.4.0...setup-firefox-v1.4.1) (2024-02-17)
+
+
+### Bug Fixes
+
+* using node20 ([#520](https://github.com/browser-actions/setup-firefox/issues/520)) ([b7d1295](https://github.com/browser-actions/setup-firefox/commit/b7d1295db99649993e97d0a01870e7c1f0a5100b))
+
 ## [1.4.0](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.3.0...setup-firefox-v1.4.0) (2023-11-11)
 
 
