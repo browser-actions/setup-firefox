@@ -52,6 +52,6 @@ jobs:
           firefox --version
       - uses: ./
         with:
-          firefox-version: "devedition-84.b1"
+          firefox-version: "devedition-84.0b1"
       - run: |
           firefox-developer --version
