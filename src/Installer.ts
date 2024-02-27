@@ -102,6 +102,8 @@ export class MacOSInstaller implements Installer {
     const appPath = (() => {
       if (version === LatestVersion.LATEST_NIGHTLY) {
         return path.join(mountpoint, "Firefox Nightly.app");
+      } else if (version.includes("devedition")) {
+        return path.join(mountpoint, "Firefox Developer Edition.app");
       } else {
         return path.join(mountpoint, "Firefox.app");
       }
