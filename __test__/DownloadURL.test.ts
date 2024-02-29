@@ -36,6 +36,26 @@ describe("ArchiveDownloadURL", () => {
     });
   });
 
+  describe.each([
+    [
+      { version: "firefox-80.0", os: OS.LINUX, arch: Arch.I686 },
+      "https://ftp.mozilla.org/pub/firefox/releases/80.0/linux-i686/en-US/firefox-80.0.tar.bz2",
+    ],
+    [
+      { version: "devedition-80.0b1", os: OS.LINUX, arch: Arch.AMD64 },
+      "https://ftp.mozilla.org/pub/devedition/releases/80.0b1/linux-x86_64/en-US/firefox-80.0b1.tar.bz2",
+    ],
+    [
+      { version: "beta-80.0b1", os: OS.LINUX, arch: Arch.AMD64 },
+      "https://ftp.mozilla.org/pub/firefox/releases/80.0b1/linux-x86_64/en-US/firefox-80.0b1.tar.bz2",
+    ],
+  ])("version %s", ({ version, os, arch }, expected) => {
+    test(`returns URL ${expected}`, () => {
+      const sut = new ArchiveDownloadURL(version, { os, arch }, "en-US");
+      expect(sut.getURL()).toEqual(expected);
+    });
+  });
+
   describe.each([[OS.MACOS, Arch.I686]])("platform %s %s", (os, arch) => {
     test(`throws an error`, () => {
       const sut = new ArchiveDownloadURL("80.0", { os, arch }, "en-US");
