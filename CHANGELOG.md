@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.4.1...setup-firefox-v1.5.0) (2024-02-29)
+
+
+### Features
+
+* firefox devedition archive versions ([#517](https://github.com/browser-actions/setup-firefox/issues/517)) ([eb151a7](https://github.com/browser-actions/setup-firefox/commit/eb151a78a71e39af170d8510d66b4e7204853a94))
+
 ## [1.4.1](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.4.0...setup-firefox-v1.4.1) (2024-02-17)
 
 
