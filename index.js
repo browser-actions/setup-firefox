@@ -7234,7 +7234,26 @@ class ArchiveDownloadURL {
         this.language = language;
     }
     getURL() {
-        return `https://ftp.mozilla.org/pub/firefox/releases/${this.version}/${this.platformPart()}/${this.language}/${this.filename()}`;
+        return `https://ftp.mozilla.org/pub/${this.productPart()}/releases/${this.versionPart()}/${this.platformPart()}/${this.language}/${this.filename()}`;
+    }
+    productPart() {
+        const lastIndex = this.version.lastIndexOf("-");
+        const productName = this.version.slice(0, lastIndex);
+        switch (productName) {
+            case "firefox":
+                return "firefox";
+            case "beta":
+                return "firefox";
+            case "devedition":
+                return "devedition";
+            default: // nightly, esr are unsupported
+                return "firefox";
+        }
+    }
+    versionPart() {
+        const lastIndex = this.version.lastIndexOf("-");
+        const version = this.version.slice(lastIndex + 1);
+        return version;
     }
     platformPart() {
         const { os, arch } = this.platform;
@@ -7256,17 +7275,17 @@ class ArchiveDownloadURL {
         else if (os === platform_1.OS.WINDOWS && arch === platform_1.Arch.ARM64) {
             return "win64-aarch64";
         }
-        throw new errors_1.UnsupportedPlatformError({ os, arch }, this.version);
+        throw new errors_1.UnsupportedPlatformError({ os, arch }, this.versionPart());
     }
     filename() {
         const { os } = this.platform;
         switch (os) {
             case platform_1.OS.MACOS:
-                return `Firefox%20${this.version}.dmg`;
+                return `Firefox%20${this.versionPart()}.dmg`;
             case platform_1.OS.LINUX:
-                return `firefox-${this.version}.tar.bz2`;
+                return `firefox-${this.versionPart()}.tar.bz2`;
             case platform_1.OS.WINDOWS:
-                return `Firefox%20Setup%20${this.version}.exe`;
+                return `Firefox%20Setup%20${this.versionPart()}.exe`;
         }
     }
 }
@@ -7470,6 +7489,9 @@ class MacOSInstaller {
             const appPath = (() => {
                 if (version === versions_1.LatestVersion.LATEST_NIGHTLY) {
                     return path_1.default.join(mountpoint, "Firefox Nightly.app");
+                }
+                else if (version.includes("devedition")) {
+                    return path_1.default.join(mountpoint, "Firefox Developer Edition.app");
                 }
                 else {
                     return path_1.default.join(mountpoint, "Firefox.app");
