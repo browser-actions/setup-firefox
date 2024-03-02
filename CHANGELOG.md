@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/ueokande/setup-firefox-sandbox/compare/setup-firefox-v1.5.0...setup-firefox-v1.6.0) (2024-03-02)
+
+
+### Features
+
+* hogefuga ([3e95dd8](https://github.com/ueokande/setup-firefox-sandbox/commit/3e95dd884b79944e07013493f3781df22c34210c))
+
 ## [1.5.0](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.4.1...setup-firefox-v1.5.0) (2024-02-29)
 
 
