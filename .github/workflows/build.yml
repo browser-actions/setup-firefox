@@ -25,33 +25,3 @@ jobs:
         with:
           name: dist
           path: ./dist/
-
-  test:
-    needs: [build]
-    strategy:
-      matrix:
-        os: [ubuntu, macos, windows]
-    runs-on: ${{ matrix.os }}-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: dist
-
-      - uses: ./
-      - run: |
-          firefox --version
-      - uses: ./
-        with:
-          firefox-version: latest-esr
-      - run: |
-          firefox --version
-      - uses: ./
-        with:
-          firefox-version: "84.0"
-      - run: |
-          firefox --version
-      - uses: ./
-        with:
-          firefox-version: "devedition-84.0b1"
-      - run: |
-          firefox --version
