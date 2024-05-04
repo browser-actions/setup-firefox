@@ -15,12 +15,12 @@ jobs:
       - uses: google-github-actions/release-please-action@v4
         id: release
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: 'latest'
         if: ${{ steps.release.outputs.release_created }}
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: dist
         if: ${{ steps.release.outputs.release_created }}
