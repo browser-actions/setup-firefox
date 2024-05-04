@@ -15,9 +15,3 @@ updates:
         patterns:
           - "typescript"
           - "@typescript-*"
-      jest:
-        patterns:
-          - "jest"
-          - "jest-*"
-          - "ts-jest"
-          - "@types/jest"
