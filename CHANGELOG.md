@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.5.0...setup-firefox-v1.5.1) (2024-05-04)
+
+
+### Bug Fixes
+
+* Adding arm64 to osx for macos-14 ([#546](https://github.com/browser-actions/setup-firefox/issues/546)) ([d880b17](https://github.com/browser-actions/setup-firefox/commit/d880b175f181fe0d1fbad6629de56872bfaf0146))
+
 ## [1.5.0](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.4.1...setup-firefox-v1.5.0) (2024-02-29)
 
 
