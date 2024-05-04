@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { ArchiveDownloadURL, LatestDownloadURL } from "../src/DownloadURL";
 import { UnsupportedPlatformError } from "../src/errors";
 import { Arch, OS } from "../src/platform";
