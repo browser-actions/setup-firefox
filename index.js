@@ -7224,9 +7224,9 @@ exports["default"] = _default;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LatestDownloadURL = exports.ArchiveDownloadURL = void 0;
+const errors_1 = __nccwpck_require__(8075);
 const platform_1 = __nccwpck_require__(2149);
 const versions_1 = __nccwpck_require__(3136);
-const errors_1 = __nccwpck_require__(8075);
 class ArchiveDownloadURL {
     constructor(version, platform, language) {
         this.version = version;
@@ -7258,6 +7258,9 @@ class ArchiveDownloadURL {
     platformPart() {
         const { os, arch } = this.platform;
         if (os === platform_1.OS.MACOS && arch === platform_1.Arch.AMD64) {
+            return "mac";
+        }
+        else if (os === platform_1.OS.MACOS && arch === platform_1.Arch.ARM64) {
             return "mac";
         }
         else if (os === platform_1.OS.LINUX && arch === platform_1.Arch.I686) {
@@ -7316,6 +7319,9 @@ class LatestDownloadURL {
     platformPart() {
         const { os, arch } = this.platform;
         if (os === platform_1.OS.MACOS && arch === platform_1.Arch.AMD64) {
+            return "osx";
+        }
+        else if (os === platform_1.OS.MACOS && arch === platform_1.Arch.ARM64) {
             return "osx";
         }
         else if (os === platform_1.OS.LINUX && arch === platform_1.Arch.I686) {
@@ -7407,12 +7413,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.WindowsInstaller = exports.MacOSInstaller = exports.LinuxInstaller = void 0;
+const node_fs_1 = __importDefault(__nccwpck_require__(7561));
+const node_path_1 = __importDefault(__nccwpck_require__(9411));
 const core = __importStar(__nccwpck_require__(8434));
-const tc = __importStar(__nccwpck_require__(725));
-const io = __importStar(__nccwpck_require__(6051));
 const exec = __importStar(__nccwpck_require__(8445));
-const fs_1 = __importDefault(__nccwpck_require__(7147));
-const path_1 = __importDefault(__nccwpck_require__(1017));
+const io = __importStar(__nccwpck_require__(6051));
+const tc = __importStar(__nccwpck_require__(725));
 const DownloadURLFactory_1 = __nccwpck_require__(5209);
 const versions_1 = __nccwpck_require__(3136);
 const commonTestVersion = (bin) => __awaiter(void 0, void 0, void 0, function* () {
@@ -7468,7 +7474,7 @@ class MacOSInstaller {
     install(spec) {
         return __awaiter(this, void 0, void 0, function* () {
             const installPath = yield this.download(spec);
-            return path_1.default.join(installPath, "Contents", "MacOS");
+            return node_path_1.default.join(installPath, "Contents", "MacOS");
         });
     }
     download({ version, platform, language, }) {
@@ -7485,16 +7491,16 @@ class MacOSInstaller {
             core.info(`Acquiring ${version} from ${url}`);
             const archivePath = yield tc.downloadTool(url);
             core.info("Extracting Firefox...");
-            const mountpoint = path_1.default.join("/Volumes", path_1.default.basename(archivePath));
+            const mountpoint = node_path_1.default.join("/Volumes", node_path_1.default.basename(archivePath));
             const appPath = (() => {
                 if (version === versions_1.LatestVersion.LATEST_NIGHTLY) {
-                    return path_1.default.join(mountpoint, "Firefox Nightly.app");
+                    return node_path_1.default.join(mountpoint, "Firefox Nightly.app");
                 }
                 else if (version.includes("devedition")) {
-                    return path_1.default.join(mountpoint, "Firefox Developer Edition.app");
+                    return node_path_1.default.join(mountpoint, "Firefox Developer Edition.app");
                 }
                 else {
-                    return path_1.default.join(mountpoint, "Firefox.app");
+                    return node_path_1.default.join(mountpoint, "Firefox.app");
                 }
             })();
             yield exec.exec("hdiutil", [
@@ -7539,7 +7545,7 @@ class WindowsInstaller {
             core.info("Extracting Firefox...");
             yield exec.exec(installerPath, [
                 "/S",
-                `/InstallDirectoryName=${path_1.default.basename(installPath)}`,
+                `/InstallDirectoryName=${node_path_1.default.basename(installPath)}`,
             ]);
             core.info(`Successfully installed firefox ${version} to ${installPath}`);
             return installPath;
@@ -7548,7 +7554,7 @@ class WindowsInstaller {
     checkInstall(dir) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield fs_1.default.promises.access(dir, fs_1.default.constants.F_OK);
+                yield node_fs_1.default.promises.access(dir, node_fs_1.default.constants.F_OK);
             }
             catch (err) {
                 return false;
@@ -7568,8 +7574,8 @@ exports.WindowsInstaller = WindowsInstaller;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const platform_1 = __nccwpck_require__(2149);
 const Installer_1 = __nccwpck_require__(4517);
+const platform_1 = __nccwpck_require__(2149);
 class InstallerFactory {
     create(platform) {
         switch (platform.os) {
@@ -7650,11 +7656,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const path = __importStar(__nccwpck_require__(1017));
+const path = __importStar(__nccwpck_require__(9411));
 const core = __importStar(__nccwpck_require__(8434));
+const InstallerFactory_1 = __importDefault(__nccwpck_require__(9669));
 const platform_1 = __nccwpck_require__(2149);
 const versions_1 = __nccwpck_require__(3136);
-const InstallerFactory_1 = __importDefault(__nccwpck_require__(9669));
 const hasErrorMessage = (e) => {
     return typeof e === "object" && e !== null && "message" in e;
 };
@@ -7697,7 +7703,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getPlatform = exports.getArch = exports.getOS = exports.Arch = exports.OS = void 0;
-const os_1 = __importDefault(__nccwpck_require__(2037));
+const node_os_1 = __importDefault(__nccwpck_require__(612));
 exports.OS = {
     MACOS: "macos",
     LINUX: "linux",
@@ -7709,7 +7715,7 @@ exports.Arch = {
     ARM64: "arm64",
 };
 const getOS = () => {
-    const platform = os_1.default.platform();
+    const platform = node_os_1.default.platform();
     switch (platform) {
         case "linux":
             return exports.OS.LINUX;
@@ -7722,7 +7728,7 @@ const getOS = () => {
 };
 exports.getOS = getOS;
 const getArch = () => {
-    const arch = os_1.default.arch();
+    const arch = node_os_1.default.arch();
     switch (arch) {
         case "arm64":
             return exports.Arch.ARM64;
@@ -7832,6 +7838,30 @@ module.exports = require("https");
 
 "use strict";
 module.exports = require("net");
+
+/***/ }),
+
+/***/ 7561:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:fs");
+
+/***/ }),
+
+/***/ 612:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:os");
+
+/***/ }),
+
+/***/ 9411:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:path");
 
 /***/ }),
 
