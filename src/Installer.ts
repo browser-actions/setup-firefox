@@ -1,11 +1,11 @@
+import fs from "node:fs";
+import path from "node:path";
 import * as core from "@actions/core";
-import * as tc from "@actions/tool-cache";
-import * as io from "@actions/io";
 import * as exec from "@actions/exec";
-import fs from "fs";
-import path from "path";
-import { Platform } from "./platform";
+import * as io from "@actions/io";
+import * as tc from "@actions/tool-cache";
 import { DownloadURLFactory } from "./DownloadURLFactory";
+import type { Platform } from "./platform";
 import { LatestVersion } from "./versions";
 
 export type InstallSpec = {

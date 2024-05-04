@@ -1,4 +1,4 @@
-import { Platform } from "./platform";
+import type { Platform } from "./platform";
 
 export class UnsupportedPlatformError extends Error {
   constructor(

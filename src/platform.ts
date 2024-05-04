@@ -1,4 +1,4 @@
-import os from "os";
+import os from "node:os";
 
 export type Platform = {
   os: OS;
@@ -11,7 +11,6 @@ export const OS = {
   WINDOWS: "windows",
 } as const;
 
-// eslint-disable-next-line no-redeclare
 export type OS = (typeof OS)[keyof typeof OS];
 
 export const Arch = {
@@ -20,7 +19,6 @@ export const Arch = {
   ARM64: "arm64",
 } as const;
 
-// eslint-disable-next-line no-redeclare
 export type Arch = (typeof Arch)[keyof typeof Arch];
 
 export const getOS = (): OS => {

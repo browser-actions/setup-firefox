@@ -15,11 +15,6 @@ updates:
         patterns:
           - "typescript"
           - "@typescript-*"
-      eslint:
-        patterns:
-          - "eslint"
-          - "eslint-*"
-          - "prettier"
       jest:
         patterns:
           - "jest"

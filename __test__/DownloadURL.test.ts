@@ -1,7 +1,7 @@
-import { OS, Arch } from "../src/platform";
 import { ArchiveDownloadURL, LatestDownloadURL } from "../src/DownloadURL";
-import { LatestVersion } from "../src/versions";
 import { UnsupportedPlatformError } from "../src/errors";
+import { Arch, OS } from "../src/platform";
+import { LatestVersion } from "../src/versions";
 
 describe("ArchiveDownloadURL", () => {
   describe.each([
@@ -57,7 +57,7 @@ describe("ArchiveDownloadURL", () => {
   });
 
   describe.each([[OS.MACOS, Arch.I686]])("platform %s %s", (os, arch) => {
-    test(`throws an error`, () => {
+    test("throws an error", () => {
       const sut = new ArchiveDownloadURL("80.0", { os, arch }, "en-US");
       expect(() => sut.getURL()).toThrowError(UnsupportedPlatformError);
     });
@@ -69,42 +69,42 @@ describe("LatestDownloadURL", () => {
     [
       LatestVersion.LATEST,
       { os: OS.LINUX, arch: Arch.I686 },
-      `https://download.mozilla.org/?product=firefox-latest&os=linux&lang=en-US`,
+      "https://download.mozilla.org/?product=firefox-latest&os=linux&lang=en-US",
     ],
     [
       LatestVersion.LATEST,
       { os: OS.LINUX, arch: Arch.AMD64 },
-      `https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US`,
+      "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US",
     ],
     [
       LatestVersion.LATEST_DEVEDITION,
       { os: OS.LINUX, arch: Arch.AMD64 },
-      `https://download.mozilla.org/?product=firefox-devedition-latest&os=linux64&lang=en-US`,
+      "https://download.mozilla.org/?product=firefox-devedition-latest&os=linux64&lang=en-US",
     ],
     [
       LatestVersion.LATEST_NIGHTLY,
       { os: OS.LINUX, arch: Arch.AMD64 },
-      `https://download.mozilla.org/?product=firefox-nightly-latest&os=linux64&lang=en-US`,
+      "https://download.mozilla.org/?product=firefox-nightly-latest&os=linux64&lang=en-US",
     ],
     [
       LatestVersion.LATEST_ESR,
       { os: OS.MACOS, arch: Arch.AMD64 },
-      `https://download.mozilla.org/?product=firefox-esr-latest&os=osx&lang=en-US`,
+      "https://download.mozilla.org/?product=firefox-esr-latest&os=osx&lang=en-US",
     ],
     [
       LatestVersion.LATEST_ESR,
       { os: OS.MACOS, arch: Arch.ARM64 },
-      `https://download.mozilla.org/?product=firefox-esr-latest&os=osx&lang=en-US`,
+      "https://download.mozilla.org/?product=firefox-esr-latest&os=osx&lang=en-US",
     ],
     [
       LatestVersion.LATEST_ESR,
       { os: OS.WINDOWS, arch: Arch.I686 },
-      `https://download.mozilla.org/?product=firefox-esr-latest&os=win&lang=en-US`,
+      "https://download.mozilla.org/?product=firefox-esr-latest&os=win&lang=en-US",
     ],
     [
       LatestVersion.LATEST_ESR,
       { os: OS.WINDOWS, arch: Arch.AMD64 },
-      `https://download.mozilla.org/?product=firefox-esr-latest&os=win64&lang=en-US`,
+      "https://download.mozilla.org/?product=firefox-esr-latest&os=win64&lang=en-US",
     ],
   ])("platform %s %s", (version, { os, arch }, expected) => {
     test(`returns URL ${expected}`, () => {
@@ -114,7 +114,7 @@ describe("LatestDownloadURL", () => {
   });
 
   describe.each([[OS.MACOS, Arch.I686]])("platform %s %s", (os, arch) => {
-    test(`throws an error`, () => {
+    test("throws an error", () => {
       const sut = new LatestDownloadURL(
         LatestVersion.LATEST,
         { os, arch },

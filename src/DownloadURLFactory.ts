@@ -1,8 +1,6 @@
-import { Platform } from "./platform";
-import DownloadURL, {
-  ArchiveDownloadURL,
-  LatestDownloadURL,
-} from "./DownloadURL";
+import type DownloadURL from "./DownloadURL";
+import { ArchiveDownloadURL, LatestDownloadURL } from "./DownloadURL";
+import type { Platform } from "./platform";
 import { isLatestVersion } from "./versions";
 
 export class DownloadURLFactory {
