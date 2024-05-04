@@ -1,8 +1,8 @@
-import * as path from "path";
+import * as path from "node:path";
 import * as core from "@actions/core";
+import InstallerFactory from "./InstallerFactory";
 import { getPlatform } from "./platform";
 import { LatestVersion } from "./versions";
-import InstallerFactory from "./InstallerFactory";
 
 const hasErrorMessage = (e: unknown): e is { message: string | Error } => {
   return typeof e === "object" && e !== null && "message" in e;

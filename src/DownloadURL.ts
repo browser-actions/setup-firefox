@@ -1,6 +1,6 @@
-import { Platform, OS, Arch } from "./platform";
-import { LatestVersion } from "./versions";
 import { UnsupportedPlatformError } from "./errors";
+import { Arch, OS, type Platform } from "./platform";
+import { LatestVersion } from "./versions";
 
 export default interface DownloadURL {
   getURL(): string;

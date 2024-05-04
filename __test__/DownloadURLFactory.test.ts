@@ -1,6 +1,6 @@
-import { OS, Arch } from "../src/platform";
-import { DownloadURLFactory } from "../src/DownloadURLFactory";
 import { ArchiveDownloadURL, LatestDownloadURL } from "../src/DownloadURL";
+import { DownloadURLFactory } from "../src/DownloadURLFactory";
+import { Arch, OS } from "../src/platform";
 
 describe("DownloadURLFactory", () => {
   describe.each([

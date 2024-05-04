@@ -1,9 +1,6 @@
-import { Platform, OS } from "./platform";
-import Installer, {
-  LinuxInstaller,
-  MacOSInstaller,
-  WindowsInstaller,
-} from "./Installer";
+import type Installer from "./Installer";
+import { LinuxInstaller, MacOSInstaller, WindowsInstaller } from "./Installer";
+import { OS, type Platform } from "./platform";
 
 export default class InstallerFactory {
   create(platform: Platform): Installer {
