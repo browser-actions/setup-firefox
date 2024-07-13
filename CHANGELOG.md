@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.5.1...setup-firefox-v1.5.2) (2024-07-13)
+
+
+### Bug Fixes
+
+* sign commits and tags ([#583](https://github.com/browser-actions/setup-firefox/issues/583)) ([6bcb267](https://github.com/browser-actions/setup-firefox/commit/6bcb26740ce1d8eabe7396b856c49439c24ed139))
+
 ## [1.5.1](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.5.0...setup-firefox-v1.5.1) (2024-05-04)
 
 
