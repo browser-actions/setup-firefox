@@ -18,7 +18,7 @@
     "@types/node": "^20.6.2",
     "@vercel/ncc": "^0.38.0",
     "typescript": "^5.2.2",
-    "vitest": "^2.0.2"
+    "vitest": "^2.0.4"
   },
   "scripts": {
     "build": "ncc build src/index.ts",
