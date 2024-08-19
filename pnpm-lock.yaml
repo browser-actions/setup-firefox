@@ -23,8 +23,8 @@ devDependencies:
     specifier: ^1.8.3
     version: 1.8.3
   '@types/node':
-    specifier: ^20.6.2
-    version: 20.6.2
+    specifier: ^22.4.1
+    version: 22.4.1
   '@vercel/ncc':
     specifier: ^0.38.0
     version: 0.38.0
@@ -33,7 +33,7 @@ devDependencies:
     version: 5.2.2
   vitest:
     specifier: ^2.0.2
-    version: 2.0.2(@types/node@20.6.2)
+    version: 2.0.2(@types/node@22.4.1)
 
 packages:
 
@@ -542,8 +542,10 @@ packages:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
     dev: true
 
-  /@types/node@20.6.2:
-    resolution: {integrity: sha512-Y+/1vGBHV/cYk6OI1Na/LHzwnlNCAfU3ZNGrc1LdRe/LAIbdDPTTv/HU3M7yXN448aTVDq3eKRm2cg7iKLb8gw==}
+  /@types/node@22.4.1:
+    resolution: {integrity: sha512-1tbpb9325+gPnKK0dMm+/LMriX0vKxf6RnB0SZUqfyVkQ4fMgUSySqhxE/y8Jvs4NyF1yHzTfG9KlnkIODxPKg==}
+    dependencies:
+      undici-types: 6.19.6
     dev: true
 
   /@vercel/ncc@0.38.0:
@@ -908,6 +910,10 @@ packages:
     hasBin: true
     dev: true
 
+  /undici-types@6.19.6:
+    resolution: {integrity: sha512-e/vggGopEfTKSvj4ihnOLTsqhrKRN3LeO6qSN/GxohhuRv8qH9bNQ4B8W7e/vFL+0XTnmHPB4/kegunZGA4Org==}
+    dev: true
+
   /uuid@3.4.0:
     resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==}
     deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
@@ -919,7 +925,7 @@ packages:
     hasBin: true
     dev: false
 
-  /vite-node@2.0.2(@types/node@20.6.2):
+  /vite-node@2.0.2(@types/node@22.4.1):
     resolution: {integrity: sha512-w4vkSz1Wo+NIQg8pjlEn0jQbcM/0D+xVaYjhw3cvarTanLLBh54oNiRbsT8PNK5GfuST0IlVXjsNRoNlqvY/fw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -928,7 +934,7 @@ packages:
       debug: 4.3.5
       pathe: 1.1.2
       tinyrainbow: 1.2.0
-      vite: 5.2.11(@types/node@20.6.2)
+      vite: 5.2.11(@types/node@22.4.1)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -940,7 +946,7 @@ packages:
       - terser
     dev: true
 
-  /vite@5.2.11(@types/node@20.6.2):
+  /vite@5.2.11(@types/node@22.4.1):
     resolution: {integrity: sha512-HndV31LWW05i1BLPMUCE1B9E9GFbOu1MbenhS58FuK6owSO5qHm7GiCotrNY1YE5rMeQSFBGmT5ZaLEjFizgiQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -968,7 +974,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.6.2
+      '@types/node': 22.4.1
       esbuild: 0.20.2
       postcss: 8.4.38
       rollup: 4.17.2
@@ -976,7 +982,7 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vitest@2.0.2(@types/node@20.6.2):
+  /vitest@2.0.2(@types/node@22.4.1):
     resolution: {integrity: sha512-WlpZ9neRIjNBIOQwBYfBSr0+of5ZCbxT2TVGKW4Lv0c8+srCFIiRdsP7U009t8mMn821HQ4XKgkx5dVWpyoyLw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -1002,7 +1008,7 @@ packages:
         optional: true
     dependencies:
       '@ampproject/remapping': 2.3.0
-      '@types/node': 20.6.2
+      '@types/node': 22.4.1
       '@vitest/expect': 2.0.2
       '@vitest/pretty-format': 2.0.2
       '@vitest/runner': 2.0.2
@@ -1018,8 +1024,8 @@ packages:
       tinybench: 2.8.0
       tinypool: 1.0.0
       tinyrainbow: 1.2.0
-      vite: 5.2.11(@types/node@20.6.2)
-      vite-node: 2.0.2(@types/node@20.6.2)
+      vite: 5.2.11(@types/node@22.4.1)
+      vite-node: 2.0.2(@types/node@22.4.1)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
       - less
