@@ -57,8 +57,20 @@ export class LinuxInstaller implements Installer {
 
     const archivePath = await tc.downloadTool(url);
     core.info("Extracting Firefox...");
+    const handle = await fs.promises.open(archivePath, "r");
+    const firstBytes = new Int8Array(3);
+    if (handle !== null) {
+      await handle.read(firstBytes, 0, 3, null);
+      core.info(
+        `Extracted ${firstBytes[0]}, ${firstBytes[1]} and ${firstBytes[2]}`,
+      );
+    }
+    const options =
+      firstBytes[0] === 66 && firstBytes[1] === 90 && firstBytes[2] === 104
+        ? "xj"
+        : "xJ";
     const extPath = await tc.extractTar(archivePath, "", [
-      "xj",
+      options,
       "--strip-components=1",
     ]);
     core.info(`Successfully extracted firefox ${version} to ${extPath}`);
