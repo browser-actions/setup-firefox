@@ -1,3 +1,4 @@
+import * as core from "@actions/core";
 import { UnsupportedPlatformError } from "./errors";
 import { Arch, OS, type Platform } from "./platform";
 import { LatestVersion } from "./versions";
@@ -63,7 +64,7 @@ export class ArchiveDownloadURL implements DownloadURL {
 
   private filename(): string {
     const { os } = this.platform;
-    console.log(
+    core.info(
       `This is the version number:${Number.parseInt(this.versionPart(), 10)}`,
     );
     switch (os) {

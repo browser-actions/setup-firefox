@@ -61,7 +61,7 @@ export class LinuxInstaller implements Installer {
     const firstBytes = new Int8Array(3);
     if (handle !== null) {
       await handle.read(firstBytes, 0, 3, null);
-      core.info(
+      core.debug(
         `Extracted ${firstBytes[0]}, ${firstBytes[1]} and ${firstBytes[2]}`,
       );
     }
