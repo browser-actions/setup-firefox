@@ -8,31 +8,31 @@ describe("ArchiveDownloadURL", () => {
   describe.each([
     [
       { os: OS.LINUX, arch: Arch.I686 },
-      "https://ftp.mozilla.org/pub/firefox/releases/80.0/linux-i686/en-US/firefox-80.0.tar.bz2",
+      "https://ftp.mozilla.org/pub/firefox/releases/134.0/linux-i686/en-US/firefox-134.0.tar.xz",
     ],
     [
       { os: OS.LINUX, arch: Arch.AMD64 },
-      "https://ftp.mozilla.org/pub/firefox/releases/80.0/linux-x86_64/en-US/firefox-80.0.tar.bz2",
+      "https://ftp.mozilla.org/pub/firefox/releases/134.0/linux-x86_64/en-US/firefox-134.0.tar.xz",
     ],
     [
       { os: OS.MACOS, arch: Arch.AMD64 },
-      "https://ftp.mozilla.org/pub/firefox/releases/80.0/mac/en-US/Firefox%2080.0.dmg",
+      "https://ftp.mozilla.org/pub/firefox/releases/134.0/mac/en-US/Firefox%20134.0.dmg",
     ],
     [
       { os: OS.WINDOWS, arch: Arch.I686 },
-      "https://ftp.mozilla.org/pub/firefox/releases/80.0/win32/en-US/Firefox%20Setup%2080.0.exe",
+      "https://ftp.mozilla.org/pub/firefox/releases/134.0/win32/en-US/Firefox%20Setup%20134.0.exe",
     ],
     [
       { os: OS.WINDOWS, arch: Arch.AMD64 },
-      "https://ftp.mozilla.org/pub/firefox/releases/80.0/win64/en-US/Firefox%20Setup%2080.0.exe",
+      "https://ftp.mozilla.org/pub/firefox/releases/134.0/win64/en-US/Firefox%20Setup%20134.0.exe",
     ],
     [
       { os: OS.WINDOWS, arch: Arch.ARM64 },
-      "https://ftp.mozilla.org/pub/firefox/releases/80.0/win64-aarch64/en-US/Firefox%20Setup%2080.0.exe",
+      "https://ftp.mozilla.org/pub/firefox/releases/134.0/win64-aarch64/en-US/Firefox%20Setup%20134.0.exe",
     ],
   ])("platform %s", ({ os, arch }, expected) => {
     test(`returns URL ${expected}`, () => {
-      const sut = new ArchiveDownloadURL("80.0", { os, arch }, "en-US");
+      const sut = new ArchiveDownloadURL("134.0", { os, arch }, "en-US");
       expect(sut.getURL()).toEqual(expected);
     });
   });
@@ -43,12 +43,12 @@ describe("ArchiveDownloadURL", () => {
       "https://ftp.mozilla.org/pub/firefox/releases/80.0/linux-i686/en-US/firefox-80.0.tar.bz2",
     ],
     [
-      { version: "devedition-80.0b1", os: OS.LINUX, arch: Arch.AMD64 },
-      "https://ftp.mozilla.org/pub/devedition/releases/80.0b1/linux-x86_64/en-US/firefox-80.0b1.tar.bz2",
+      { version: "devedition-134.0b1", os: OS.LINUX, arch: Arch.AMD64 },
+      "https://ftp.mozilla.org/pub/devedition/releases/134.0b1/linux-x86_64/en-US/firefox-134.0b1.tar.xz",
     ],
     [
-      { version: "beta-80.0b1", os: OS.LINUX, arch: Arch.AMD64 },
-      "https://ftp.mozilla.org/pub/firefox/releases/80.0b1/linux-x86_64/en-US/firefox-80.0b1.tar.bz2",
+      { version: "beta-134.0b1", os: OS.LINUX, arch: Arch.AMD64 },
+      "https://ftp.mozilla.org/pub/firefox/releases/134.0b1/linux-x86_64/en-US/firefox-134.0b1.tar.xz",
     ],
   ])("version %s", ({ version, os, arch }, expected) => {
     test(`returns URL ${expected}`, () => {

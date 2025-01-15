@@ -1,3 +1,4 @@
+import * as core from "@actions/core";
 import { UnsupportedPlatformError } from "./errors";
 import { Arch, OS, type Platform } from "./platform";
 import { LatestVersion } from "./versions";
@@ -63,11 +64,18 @@ export class ArchiveDownloadURL implements DownloadURL {
 
   private filename(): string {
     const { os } = this.platform;
+    core.info(
+      `This is the version number:${Number.parseInt(this.versionPart(), 10)}`,
+    );
     switch (os) {
       case OS.MACOS:
         return `Firefox%20${this.versionPart()}.dmg`;
       case OS.LINUX:
-        return `firefox-${this.versionPart()}.tar.bz2`;
+        if (Number.parseInt(this.versionPart(), 10) < 134) {
+          return `firefox-${this.versionPart()}.tar.bz2`;
+        } else {
+          return `firefox-${this.versionPart()}.tar.xz`;
+        }
       case OS.WINDOWS:
         return `Firefox%20Setup%20${this.versionPart()}.exe`;
     }
