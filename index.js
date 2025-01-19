@@ -7218,12 +7218,36 @@ exports["default"] = _default;
 /***/ }),
 
 /***/ 7955:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LatestDownloadURL = exports.ArchiveDownloadURL = void 0;
+const core = __importStar(__nccwpck_require__(8434));
 const errors_1 = __nccwpck_require__(8075);
 const platform_1 = __nccwpck_require__(2149);
 const versions_1 = __nccwpck_require__(3136);
@@ -7282,11 +7306,17 @@ class ArchiveDownloadURL {
     }
     filename() {
         const { os } = this.platform;
+        core.info(`This is the version number:${Number.parseInt(this.versionPart(), 10)}`);
         switch (os) {
             case platform_1.OS.MACOS:
                 return `Firefox%20${this.versionPart()}.dmg`;
             case platform_1.OS.LINUX:
-                return `firefox-${this.versionPart()}.tar.bz2`;
+                if (Number.parseInt(this.versionPart(), 10) < 134) {
+                    return `firefox-${this.versionPart()}.tar.bz2`;
+                }
+                else {
+                    return `firefox-${this.versionPart()}.tar.xz`;
+                }
             case platform_1.OS.WINDOWS:
                 return `Firefox%20Setup%20${this.versionPart()}.exe`;
         }
@@ -7454,8 +7484,17 @@ class LinuxInstaller {
             core.info(`Acquiring ${version} from ${url}`);
             const archivePath = yield tc.downloadTool(url);
             core.info("Extracting Firefox...");
+            const handle = yield node_fs_1.default.promises.open(archivePath, "r");
+            const firstBytes = new Int8Array(3);
+            if (handle !== null) {
+                yield handle.read(firstBytes, 0, 3, null);
+                core.debug(`Extracted ${firstBytes[0]}, ${firstBytes[1]} and ${firstBytes[2]}`);
+            }
+            const options = firstBytes[0] === 66 && firstBytes[1] === 90 && firstBytes[2] === 104
+                ? "xj"
+                : "xJ";
             const extPath = yield tc.extractTar(archivePath, "", [
-                "xj",
+                options,
                 "--strip-components=1",
             ]);
             core.info(`Successfully extracted firefox ${version} to ${extPath}`);
