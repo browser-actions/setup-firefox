@@ -8,11 +8,11 @@ describe("ArchiveDownloadURL", () => {
   describe.each([
     [
       { os: OS.LINUX, arch: Arch.I686 },
-      "https://ftp.mozilla.org/pub/firefox/releases/134.0/linux-i686/en-US/firefox-134.0.tar.xz",
+      "https://ftp.mozilla.org/pub/firefox/releases/134.0/linux-i686/en-US/firefox-134.0.tar.bz2",
     ],
     [
       { os: OS.LINUX, arch: Arch.AMD64 },
-      "https://ftp.mozilla.org/pub/firefox/releases/134.0/linux-x86_64/en-US/firefox-134.0.tar.xz",
+      "https://ftp.mozilla.org/pub/firefox/releases/134.0/linux-x86_64/en-US/firefox-134.0.tar.bz2",
     ],
     [
       { os: OS.MACOS, arch: Arch.AMD64 },
@@ -43,12 +43,12 @@ describe("ArchiveDownloadURL", () => {
       "https://ftp.mozilla.org/pub/firefox/releases/80.0/linux-i686/en-US/firefox-80.0.tar.bz2",
     ],
     [
-      { version: "devedition-134.0b1", os: OS.LINUX, arch: Arch.AMD64 },
-      "https://ftp.mozilla.org/pub/devedition/releases/134.0b1/linux-x86_64/en-US/firefox-134.0b1.tar.xz",
+      { version: "devedition-135.0b1", os: OS.LINUX, arch: Arch.AMD64 },
+      "https://ftp.mozilla.org/pub/devedition/releases/135.0b1/linux-x86_64/en-US/firefox-135.0b1.tar.xz",
     ],
     [
-      { version: "beta-134.0b1", os: OS.LINUX, arch: Arch.AMD64 },
-      "https://ftp.mozilla.org/pub/firefox/releases/134.0b1/linux-x86_64/en-US/firefox-134.0b1.tar.xz",
+      { version: "beta-135.0b1", os: OS.LINUX, arch: Arch.AMD64 },
+      "https://ftp.mozilla.org/pub/firefox/releases/135.0b1/linux-x86_64/en-US/firefox-135.0b1.tar.xz",
     ],
   ])("version %s", ({ version, os, arch }, expected) => {
     test(`returns URL ${expected}`, () => {
