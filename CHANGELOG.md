@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.3](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.5.2...setup-firefox-v1.5.3) (2025-01-19)
+
+
+### Miscellaneous Chores
+
+* release 1.5.3 ([e6eeeac](https://github.com/browser-actions/setup-firefox/commit/e6eeeacf126a62846b9059b57f02c98aebf7f44d))
+
 ## [1.5.2](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.5.1...setup-firefox-v1.5.2) (2024-07-13)
 
 
