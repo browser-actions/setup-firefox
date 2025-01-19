@@ -3,7 +3,10 @@
 ## [1.5.3](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.5.2...setup-firefox-v1.5.3) (2025-01-19)
 
 
-### Miscellaneous Chores
+### Bug Fixes
+
+* Coping with compression change for linux download ([#623](https://github.com/browser-actions/setup-firefox/issues/623)) ([063eed6](https://github.com/browser-actions/setup-firefox/commit/063eed68fefb6e72be98fb0c0d2d106784c79634))
+
 
 * release 1.5.3 ([e6eeeac](https://github.com/browser-actions/setup-firefox/commit/e6eeeacf126a62846b9059b57f02c98aebf7f44d))
 
