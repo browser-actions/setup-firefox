@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.4](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.5.3...setup-firefox-v1.5.4) (2025-01-25)
+
+
+### Bug Fixes
+
+* Fix an off-by-one error with bz2/xz download URLs ([#626](https://github.com/browser-actions/setup-firefox/issues/626)) ([f7574dd](https://github.com/browser-actions/setup-firefox/commit/f7574dd7c71ff2cf094cdaa89735bdcb096d72e5)), closes [#625](https://github.com/browser-actions/setup-firefox/issues/625)
+
 ## [1.5.3](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.5.2...setup-firefox-v1.5.3) (2025-01-19)
 
 
