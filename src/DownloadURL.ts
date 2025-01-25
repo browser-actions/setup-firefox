@@ -71,7 +71,7 @@ export class ArchiveDownloadURL implements DownloadURL {
       case OS.MACOS:
         return `Firefox%20${this.versionPart()}.dmg`;
       case OS.LINUX:
-        if (Number.parseInt(this.versionPart(), 10) < 134) {
+        if (Number.parseInt(this.versionPart(), 10) <= 134) {
           return `firefox-${this.versionPart()}.tar.bz2`;
         } else {
           return `firefox-${this.versionPart()}.tar.xz`;
