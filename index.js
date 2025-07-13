@@ -7366,6 +7366,9 @@ class LatestDownloadURL {
         else if (os === platform_1.OS.WINDOWS && arch === platform_1.Arch.AMD64) {
             return "win64";
         }
+        else if (os === platform_1.OS.WINDOWS && arch === platform_1.Arch.ARM64) {
+            return "win64-aarch64";
+        }
         throw new errors_1.UnsupportedPlatformError({ os, arch }, this.version);
     }
 }
