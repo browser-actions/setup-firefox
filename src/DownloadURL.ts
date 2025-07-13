@@ -124,6 +124,8 @@ export class LatestDownloadURL implements DownloadURL {
       return "win";
     } else if (os === OS.WINDOWS && arch === Arch.AMD64) {
       return "win64";
+    } else if (os === OS.WINDOWS && arch === Arch.ARM64) {
+      return "win64-aarch64";
     }
     throw new UnsupportedPlatformError({ os, arch }, this.version);
   }

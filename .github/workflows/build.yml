@@ -30,8 +30,8 @@ jobs:
     needs: [build]
     strategy:
       matrix:
-        os: [ubuntu, macos, windows]
-    runs-on: ${{ matrix.os }}-latest
+        os: [ubuntu-latest, macos-latest, windows-latest, windows-11-arm]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/download-artifact@v4
         with:

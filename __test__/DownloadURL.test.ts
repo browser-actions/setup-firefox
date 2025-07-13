@@ -107,6 +107,11 @@ describe("LatestDownloadURL", () => {
       { os: OS.WINDOWS, arch: Arch.AMD64 },
       "https://download.mozilla.org/?product=firefox-esr-latest&os=win64&lang=en-US",
     ],
+    [
+      LatestVersion.LATEST_ESR,
+      { os: OS.WINDOWS, arch: Arch.ARM64 },
+      "https://download.mozilla.org/?product=firefox-esr-latest&os=win64-aarch64&lang=en-US",
+    ],
   ])("platform %s %s", (version, { os, arch }, expected) => {
     test(`returns URL ${expected}`, () => {
       const sut = new LatestDownloadURL(version, { os, arch }, "en-US");
