@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.5.4...setup-firefox-v1.6.0) (2025-07-13)
+
+
+### Features
+
+* Support windows 11 arm ([#631](https://github.com/browser-actions/setup-firefox/issues/631)) ([5db7048](https://github.com/browser-actions/setup-firefox/commit/5db70482d10f7a9236fb5451388e81941932cb1f))
+
 ## [1.5.4](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.5.3...setup-firefox-v1.5.4) (2025-01-25)
 
 
