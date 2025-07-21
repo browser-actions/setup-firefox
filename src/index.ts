@@ -1,6 +1,6 @@
 import * as path from "node:path";
 import * as core from "@actions/core";
-import InstallerFactory from "./InstallerFactory";
+import { InstallerFactory } from "./installers";
 import { getPlatform } from "./platform";
 import { LatestVersion } from "./versions";
 
