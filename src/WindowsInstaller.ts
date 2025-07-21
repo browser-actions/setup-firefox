@@ -9,15 +9,7 @@ import { testBinaryVersion } from "./firefoxUtils";
 import type { InstallSpec, Installer } from "./installers";
 
 export class WindowsInstaller implements Installer {
-  install(spec: InstallSpec): Promise<string> {
-    return this.download(spec);
-  }
-
-  async download({
-    version,
-    platform,
-    language,
-  }: InstallSpec): Promise<string> {
+  async install({ version, platform, language }: InstallSpec): Promise<string> {
     const installPath = `C:\\Program Files\\Firefox_${version}`;
     if (await this.checkInstall(installPath)) {
       core.info(`Already installed @ ${installPath}`);
@@ -25,7 +17,24 @@ export class WindowsInstaller implements Installer {
     }
 
     core.info(`Attempting to download firefox ${version}...`);
+    const installerPath = await this.downloadArchive({
+      version,
+      platform,
+      language,
+    });
 
+    core.info("Extracting Firefox...");
+    await this.extractArchive(installerPath, installPath);
+    core.info(`Successfully installed firefox ${version} to ${installPath}`);
+
+    return installPath;
+  }
+
+  private async downloadArchive({
+    version,
+    platform,
+    language,
+  }: InstallSpec): Promise<string> {
     const url = new DownloadURLFactory(version, platform, language)
       .create()
       .getURL();
@@ -33,15 +42,8 @@ export class WindowsInstaller implements Installer {
 
     const installerPath = await tc.downloadTool(url);
     await io.mv(installerPath, `${installerPath}.exe`);
-    core.info("Extracting Firefox...");
 
-    await exec.exec(installerPath, [
-      "/S",
-      `/InstallDirectoryName=${path.basename(installPath)}`,
-    ]);
-    core.info(`Successfully installed firefox ${version} to ${installPath}`);
-
-    return installPath;
+    return installerPath;
   }
 
   private async checkInstall(dir: string): Promise<boolean> {
@@ -51,6 +53,16 @@ export class WindowsInstaller implements Installer {
       return false;
     }
     return true;
+  }
+
+  private async extractArchive(
+    installerPath: string,
+    installPath: string,
+  ): Promise<void> {
+    await exec.exec(installerPath, [
+      "/S",
+      `/InstallDirectoryName=${path.basename(installPath)}`,
+    ]);
   }
 
   async testVersion(bin: string): Promise<string> {
