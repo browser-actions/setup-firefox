@@ -37,21 +37,33 @@ jobs:
         with:
           name: dist
 
-      - uses: ./
+      - name: Test default
+        uses: ./
+        id: test-default
       - run: |
           firefox --version
-      - uses: ./
+          ${{ steps.test-default.outputs.firefox-path }} --version
+      - name: Test latest-esr
+        uses: ./
         with:
           firefox-version: latest-esr
+        id: test-latest-esr
       - run: |
           firefox --version
-      - uses: ./
+          ${{ steps.test-latest-esr.outputs.firefox-path }} --version
+      - name: Test 132.0
+        uses: ./
         with:
           firefox-version: "132.0"
+        id: test-132-0
       - run: |
           firefox --version
-      - uses: ./
+          ${{ steps.test-132-0.outputs.firefox-path }} --version
+      - name: Test devedition-132.0b1
+        uses: ./
         with:
           firefox-version: "devedition-132.0b1"
+        id: test-devedition-132-0b1
       - run: |
           firefox --version
+          ${{ steps.test-devedition-132-0b1.outputs.firefox-path }} --version
