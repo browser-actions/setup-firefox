@@ -6,14 +6,21 @@ import * as io from "@actions/io";
 import * as tc from "@actions/tool-cache";
 import { DownloadURLFactory } from "./DownloadURLFactory";
 import { testBinaryVersion } from "./firefoxUtils";
-import type { InstallSpec, Installer } from "./installers";
+import type { InstallResult, InstallSpec, Installer } from "./installers";
 
 export class WindowsInstaller implements Installer {
-  async install({ version, platform, language }: InstallSpec): Promise<string> {
+  async install({
+    version,
+    platform,
+    language,
+  }: InstallSpec): Promise<InstallResult> {
     const installPath = `C:\\Program Files\\Firefox_${version}`;
     if (await this.checkInstall(installPath)) {
       core.info(`Already installed @ ${installPath}`);
-      return installPath;
+      return {
+        installedDir: installPath,
+        installedBinPath: path.join(installPath, "firefox.exe"),
+      };
     }
 
     core.info(`Attempting to download firefox ${version}...`);
@@ -27,7 +34,10 @@ export class WindowsInstaller implements Installer {
     await this.extractArchive(installerPath, installPath);
     core.info(`Successfully installed firefox ${version} to ${installPath}`);
 
-    return installPath;
+    return {
+      installedDir: installPath,
+      installedBinPath: path.join(installPath, "firefox.exe"),
+    };
   }
 
   private async downloadArchive({

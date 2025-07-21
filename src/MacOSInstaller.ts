@@ -4,15 +4,22 @@ import * as exec from "@actions/exec";
 import * as tc from "@actions/tool-cache";
 import { DownloadURLFactory } from "./DownloadURLFactory";
 import { testBinaryVersion } from "./firefoxUtils";
-import type { InstallSpec, Installer } from "./installers";
+import type { InstallResult, InstallSpec, Installer } from "./installers";
 import { LatestVersion } from "./versions";
 
 export class MacOSInstaller implements Installer {
-  async install({ version, platform, language }: InstallSpec): Promise<string> {
+  async install({
+    version,
+    platform,
+    language,
+  }: InstallSpec): Promise<InstallResult> {
     const toolPath = tc.find("firefox", version);
     if (toolPath) {
       core.info(`Found in cache @ ${toolPath}`);
-      return toolPath;
+      return {
+        installedDir: toolPath,
+        installedBinPath: path.join(toolPath, "Contents", "MacOS", "firefox"),
+      };
     }
     core.info(`Attempting to download firefox ${version}...`);
     const archivePath = await this.downloadArchive({
@@ -29,7 +36,10 @@ export class MacOSInstaller implements Installer {
     const cachedDir = await tc.cacheDir(appPath, "firefox", version);
     core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
 
-    return path.join(cachedDir, "Contents", "MacOS");
+    return {
+      installedDir: cachedDir,
+      installedBinPath: path.join(cachedDir, "Contents", "MacOS", "firefox"),
+    };
   }
 
   private async downloadArchive({

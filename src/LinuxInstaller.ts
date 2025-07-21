@@ -1,17 +1,24 @@
 import fs from "node:fs";
+import path from "node:path";
 import * as core from "@actions/core";
 import * as tc from "@actions/tool-cache";
 import { DownloadURLFactory } from "./DownloadURLFactory";
 import { testBinaryVersion } from "./firefoxUtils";
-import type { InstallSpec, Installer } from "./installers";
-import { Platform } from "./platform";
+import type { InstallResult, InstallSpec, Installer } from "./installers";
 
 export class LinuxInstaller implements Installer {
-  async install({ version, platform, language }: InstallSpec): Promise<string> {
+  async install({
+    version,
+    platform,
+    language,
+  }: InstallSpec): Promise<InstallResult> {
     const toolPath = tc.find("firefox", version);
     if (toolPath) {
       core.info(`Found in cache @ ${toolPath}`);
-      return toolPath;
+      return {
+        installedDir: toolPath,
+        installedBinPath: path.join(toolPath, "firefox"),
+      };
     }
     core.info(`Attempting to download firefox ${version}...`);
     const archivePath = await this.downloadArchive({
@@ -28,7 +35,10 @@ export class LinuxInstaller implements Installer {
     const cachedDir = await tc.cacheDir(extPath, "firefox", version);
     core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
 
-    return cachedDir;
+    return {
+      installedDir: extPath,
+      installedBinPath: path.join(cachedDir, "firefox"),
+    };
   }
 
   private async downloadArchive({
