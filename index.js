@@ -7293,6 +7293,9 @@ class ArchiveDownloadURL {
         else if (os === platform_1.OS.LINUX && arch === platform_1.Arch.AMD64) {
             return "linux-x86_64";
         }
+        else if (os === platform_1.OS.LINUX && arch === platform_1.Arch.ARM64) {
+            return "linux-aarch64";
+        }
         else if (os === platform_1.OS.WINDOWS && arch === platform_1.Arch.I686) {
             return "win32";
         }
@@ -7360,6 +7363,9 @@ class LatestDownloadURL {
         else if (os === platform_1.OS.LINUX && arch === platform_1.Arch.AMD64) {
             return "linux64";
         }
+        else if (os === platform_1.OS.LINUX && arch === platform_1.Arch.ARM64) {
+            return "linux64-aarch64";
+        }
         else if (os === platform_1.OS.WINDOWS && arch === platform_1.Arch.I686) {
             return "win";
         }
@@ -7404,7 +7410,7 @@ exports.DownloadURLFactory = DownloadURLFactory;
 
 /***/ }),
 
-/***/ 4517:
+/***/ 1682:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -7445,52 +7451,58 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.WindowsInstaller = exports.MacOSInstaller = exports.LinuxInstaller = void 0;
+exports.LinuxInstaller = void 0;
 const node_fs_1 = __importDefault(__nccwpck_require__(7561));
 const node_path_1 = __importDefault(__nccwpck_require__(9411));
 const core = __importStar(__nccwpck_require__(8434));
-const exec = __importStar(__nccwpck_require__(8445));
-const io = __importStar(__nccwpck_require__(6051));
 const tc = __importStar(__nccwpck_require__(725));
 const DownloadURLFactory_1 = __nccwpck_require__(5209);
-const versions_1 = __nccwpck_require__(3136);
-const commonTestVersion = (bin) => __awaiter(void 0, void 0, void 0, function* () {
-    const output = yield exec.getExecOutput(`"${bin}"`, ["--version"]);
-    if (output.exitCode !== 0) {
-        throw new Error(`firefox exits with status ${output.exitCode}: ${output.stderr}`);
-    }
-    if (!output.stdout.startsWith("Mozilla Firefox ")) {
-        throw new Error(`firefox outputs unexpected results: ${output.stdout}`);
-    }
-    return output.stdout.trimEnd().replace("Mozilla Firefox ", "");
-});
+const firefoxUtils_1 = __nccwpck_require__(4128);
 class LinuxInstaller {
-    constructor() {
-        this.testVersion = commonTestVersion;
-    }
-    install(spec) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.download(spec);
-        });
-    }
-    download({ version, platform, language, }) {
+    install({ version, platform, language, }) {
         return __awaiter(this, void 0, void 0, function* () {
             const toolPath = tc.find("firefox", version);
             if (toolPath) {
                 core.info(`Found in cache @ ${toolPath}`);
-                return toolPath;
+                return {
+                    installedDir: toolPath,
+                    installedBinPath: node_path_1.default.join(toolPath, "firefox"),
+                };
             }
             core.info(`Attempting to download firefox ${version}...`);
+            const archivePath = yield this.downloadArchive({
+                version,
+                platform,
+                language,
+            });
+            core.info("Extracting Firefox...");
+            const extPath = yield this.extractArchive(archivePath);
+            core.info(`Successfully extracted firefox ${version} to ${extPath}`);
+            core.info("Adding to the cache ...");
+            const cachedDir = yield tc.cacheDir(extPath, "firefox", version);
+            core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
+            return {
+                installedDir: extPath,
+                installedBinPath: node_path_1.default.join(cachedDir, "firefox"),
+            };
+        });
+    }
+    downloadArchive({ version, platform, language, }) {
+        return __awaiter(this, void 0, void 0, function* () {
             const url = new DownloadURLFactory_1.DownloadURLFactory(version, platform, language)
                 .create()
                 .getURL();
             core.info(`Acquiring ${version} from ${url}`);
             const archivePath = yield tc.downloadTool(url);
-            core.info("Extracting Firefox...");
-            const handle = yield node_fs_1.default.promises.open(archivePath, "r");
+            return archivePath;
+        });
+    }
+    extractArchive(archivePath) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const file = yield node_fs_1.default.promises.open(archivePath, "r");
             const firstBytes = new Int8Array(3);
-            if (handle !== null) {
-                yield handle.read(firstBytes, 0, 3, null);
+            if (file !== null) {
+                yield file.read(firstBytes, 0, 3, null);
                 core.debug(`Extracted ${firstBytes[0]}, ${firstBytes[1]} and ${firstBytes[2]}`);
             }
             const options = firstBytes[0] === 66 && firstBytes[1] === 90 && firstBytes[2] === 104
@@ -7500,51 +7512,111 @@ class LinuxInstaller {
                 options,
                 "--strip-components=1",
             ]);
-            core.info(`Successfully extracted firefox ${version} to ${extPath}`);
-            core.info("Adding to the cache ...");
-            const cachedDir = yield tc.cacheDir(extPath, "firefox", version);
-            core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
-            return cachedDir;
+            return extPath;
+        });
+    }
+    testVersion(bin) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (0, firefoxUtils_1.testBinaryVersion)(bin);
         });
     }
 }
 exports.LinuxInstaller = LinuxInstaller;
+
+
+/***/ }),
+
+/***/ 724:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.MacOSInstaller = void 0;
+const node_path_1 = __importDefault(__nccwpck_require__(9411));
+const core = __importStar(__nccwpck_require__(8434));
+const exec = __importStar(__nccwpck_require__(8445));
+const tc = __importStar(__nccwpck_require__(725));
+const DownloadURLFactory_1 = __nccwpck_require__(5209);
+const firefoxUtils_1 = __nccwpck_require__(4128);
+const versions_1 = __nccwpck_require__(3136);
 class MacOSInstaller {
-    constructor() {
-        this.testVersion = commonTestVersion;
-    }
-    install(spec) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const installPath = yield this.download(spec);
-            return node_path_1.default.join(installPath, "Contents", "MacOS");
-        });
-    }
-    download({ version, platform, language, }) {
+    install({ version, platform, language, }) {
         return __awaiter(this, void 0, void 0, function* () {
             const toolPath = tc.find("firefox", version);
             if (toolPath) {
                 core.info(`Found in cache @ ${toolPath}`);
-                return toolPath;
+                return {
+                    installedDir: toolPath,
+                    installedBinPath: node_path_1.default.join(toolPath, "Contents", "MacOS", "firefox"),
+                };
             }
             core.info(`Attempting to download firefox ${version}...`);
+            const archivePath = yield this.downloadArchive({
+                version,
+                platform,
+                language,
+            });
+            core.info("Extracting Firefox...");
+            const appPath = yield this.extractArchive(archivePath, version);
+            core.info(`Successfully extracted firefox ${version} to ${appPath}`);
+            core.info("Adding to the cache ...");
+            const cachedDir = yield tc.cacheDir(appPath, "firefox", version);
+            core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
+            return {
+                installedDir: cachedDir,
+                installedBinPath: node_path_1.default.join(cachedDir, "Contents", "MacOS", "firefox"),
+            };
+        });
+    }
+    downloadArchive({ version, platform, language, }) {
+        return __awaiter(this, void 0, void 0, function* () {
             const url = new DownloadURLFactory_1.DownloadURLFactory(version, platform, language)
                 .create()
                 .getURL();
             core.info(`Acquiring ${version} from ${url}`);
             const archivePath = yield tc.downloadTool(url);
-            core.info("Extracting Firefox...");
+            return archivePath;
+        });
+    }
+    extractArchive(archivePath, version) {
+        return __awaiter(this, void 0, void 0, function* () {
             const mountpoint = node_path_1.default.join("/Volumes", node_path_1.default.basename(archivePath));
-            const appPath = (() => {
-                if (version === versions_1.LatestVersion.LATEST_NIGHTLY) {
-                    return node_path_1.default.join(mountpoint, "Firefox Nightly.app");
-                }
-                else if (version.includes("devedition")) {
-                    return node_path_1.default.join(mountpoint, "Firefox Developer Edition.app");
-                }
-                else {
-                    return node_path_1.default.join(mountpoint, "Firefox.app");
-                }
-            })();
             yield exec.exec("hdiutil", [
                 "attach",
                 "-quiet",
@@ -7554,43 +7626,113 @@ class MacOSInstaller {
                 mountpoint,
                 archivePath,
             ]);
-            core.info(`Successfully extracted firefox ${version} to ${appPath}`);
-            core.info("Adding to the cache ...");
-            const cachedDir = yield tc.cacheDir(appPath, "firefox", version);
-            core.info(`Successfully cached firefox ${version} to ${cachedDir}`);
-            return cachedDir;
+            if (version === versions_1.LatestVersion.LATEST_NIGHTLY) {
+                return node_path_1.default.join(mountpoint, "Firefox Nightly.app");
+            }
+            else if (version.includes("devedition")) {
+                return node_path_1.default.join(mountpoint, "Firefox Developer Edition.app");
+            }
+            else {
+                return node_path_1.default.join(mountpoint, "Firefox.app");
+            }
+        });
+    }
+    testVersion(bin) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (0, firefoxUtils_1.testBinaryVersion)(bin);
         });
     }
 }
 exports.MacOSInstaller = MacOSInstaller;
+
+
+/***/ }),
+
+/***/ 3277:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.WindowsInstaller = void 0;
+const node_fs_1 = __importDefault(__nccwpck_require__(7561));
+const node_path_1 = __importDefault(__nccwpck_require__(9411));
+const core = __importStar(__nccwpck_require__(8434));
+const exec = __importStar(__nccwpck_require__(8445));
+const io = __importStar(__nccwpck_require__(6051));
+const tc = __importStar(__nccwpck_require__(725));
+const DownloadURLFactory_1 = __nccwpck_require__(5209);
+const firefoxUtils_1 = __nccwpck_require__(4128);
 class WindowsInstaller {
-    constructor() {
-        this.testVersion = commonTestVersion;
-    }
-    install(spec) {
-        return this.download(spec);
-    }
-    download({ version, platform, language, }) {
+    install({ version, platform, language, }) {
         return __awaiter(this, void 0, void 0, function* () {
             const installPath = `C:\\Program Files\\Firefox_${version}`;
             if (yield this.checkInstall(installPath)) {
                 core.info(`Already installed @ ${installPath}`);
-                return installPath;
+                return {
+                    installedDir: installPath,
+                    installedBinPath: node_path_1.default.join(installPath, "firefox.exe"),
+                };
             }
             core.info(`Attempting to download firefox ${version}...`);
+            const installerPath = yield this.downloadArchive({
+                version,
+                platform,
+                language,
+            });
+            core.info("Extracting Firefox...");
+            yield this.extractArchive(installerPath, installPath);
+            core.info(`Successfully installed firefox ${version} to ${installPath}`);
+            return {
+                installedDir: installPath,
+                installedBinPath: node_path_1.default.join(installPath, "firefox.exe"),
+            };
+        });
+    }
+    downloadArchive({ version, platform, language, }) {
+        return __awaiter(this, void 0, void 0, function* () {
             const url = new DownloadURLFactory_1.DownloadURLFactory(version, platform, language)
                 .create()
                 .getURL();
             core.info(`Acquiring ${version} from ${url}`);
             const installerPath = yield tc.downloadTool(url);
             yield io.mv(installerPath, `${installerPath}.exe`);
-            core.info("Extracting Firefox...");
-            yield exec.exec(installerPath, [
-                "/S",
-                `/InstallDirectoryName=${node_path_1.default.basename(installPath)}`,
-            ]);
-            core.info(`Successfully installed firefox ${version} to ${installPath}`);
-            return installPath;
+            return installerPath;
         });
     }
     checkInstall(dir) {
@@ -7604,33 +7746,21 @@ class WindowsInstaller {
             return true;
         });
     }
-}
-exports.WindowsInstaller = WindowsInstaller;
-
-
-/***/ }),
-
-/***/ 9669:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const Installer_1 = __nccwpck_require__(4517);
-const platform_1 = __nccwpck_require__(2149);
-class InstallerFactory {
-    create(platform) {
-        switch (platform.os) {
-            case platform_1.OS.LINUX:
-                return new Installer_1.LinuxInstaller();
-            case platform_1.OS.MACOS:
-                return new Installer_1.MacOSInstaller();
-            case platform_1.OS.WINDOWS:
-                return new Installer_1.WindowsInstaller();
-        }
+    extractArchive(installerPath, installPath) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield exec.exec(installerPath, [
+                "/S",
+                `/InstallDirectoryName=${node_path_1.default.basename(installPath)}`,
+            ]);
+        });
+    }
+    testVersion(bin) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (0, firefoxUtils_1.testBinaryVersion)(bin);
+        });
     }
 }
-exports["default"] = InstallerFactory;
+exports.WindowsInstaller = WindowsInstaller;
 
 
 /***/ }),
@@ -7653,6 +7783,61 @@ class UnsupportedPlatformError extends Error {
     }
 }
 exports.UnsupportedPlatformError = UnsupportedPlatformError;
+
+
+/***/ }),
+
+/***/ 4128:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.testBinaryVersion = void 0;
+const exec = __importStar(__nccwpck_require__(8445));
+const testBinaryVersion = (bin) => __awaiter(void 0, void 0, void 0, function* () {
+    const output = yield exec.getExecOutput(`"${bin}"`, ["--version"]);
+    if (output.exitCode !== 0) {
+        throw new Error(`firefox exits with status ${output.exitCode}: ${output.stderr}`);
+    }
+    if (!output.stdout.startsWith("Mozilla Firefox ")) {
+        throw new Error(`firefox outputs unexpected results: ${output.stdout}`);
+    }
+    return output.stdout.trimEnd().replace("Mozilla Firefox ", "");
+});
+exports.testBinaryVersion = testBinaryVersion;
 
 
 /***/ }),
@@ -7694,13 +7879,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const path = __importStar(__nccwpck_require__(9411));
 const core = __importStar(__nccwpck_require__(8434));
-const InstallerFactory_1 = __importDefault(__nccwpck_require__(9669));
+const installers_1 = __nccwpck_require__(4329);
 const platform_1 = __nccwpck_require__(2149);
 const versions_1 = __nccwpck_require__(3136);
 const hasErrorMessage = (e) => {
@@ -7712,10 +7893,13 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         const platform = (0, platform_1.getPlatform)();
         const language = core.getInput("firefox-language") || "en-US";
         core.info(`Setup firefox ${version} (${language})`);
-        const installer = new InstallerFactory_1.default().create(platform);
-        const installDir = yield installer.install({ version, platform, language });
-        core.addPath(installDir);
-        const installedBinPath = path.join(installDir, "firefox");
+        const installer = new installers_1.InstallerFactory().create(platform);
+        const { installedDir, installedBinPath } = yield installer.install({
+            version,
+            platform,
+            language,
+        });
+        core.addPath(installedDir);
         const installedVersion = yield installer.testVersion(installedBinPath);
         core.info(`Successfully setup firefox version ${installedVersion}`);
         core.setOutput("firefox-version", installedVersion);
@@ -7731,6 +7915,34 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 run();
+
+
+/***/ }),
+
+/***/ 4329:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.InstallerFactory = void 0;
+const LinuxInstaller_1 = __nccwpck_require__(1682);
+const MacOSInstaller_1 = __nccwpck_require__(724);
+const WindowsInstaller_1 = __nccwpck_require__(3277);
+const platform_1 = __nccwpck_require__(2149);
+class InstallerFactory {
+    create(platform) {
+        switch (platform.os) {
+            case platform_1.OS.LINUX:
+                return new LinuxInstaller_1.LinuxInstaller();
+            case platform_1.OS.MACOS:
+                return new MacOSInstaller_1.MacOSInstaller();
+            case platform_1.OS.WINDOWS:
+                return new WindowsInstaller_1.WindowsInstaller();
+        }
+    }
+}
+exports.InstallerFactory = InstallerFactory;
 
 
 /***/ }),
