@@ -1,10 +1,8 @@
 import { describe, expect, test } from "vitest";
-import {
-  LinuxInstaller,
-  MacOSInstaller,
-  WindowsInstaller,
-} from "../src/Installer";
-import InstallerFactory from "../src/InstallerFactory";
+import { LinuxInstaller } from "../src/LinuxInstaller";
+import { MacOSInstaller } from "../src/MacOSInstaller";
+import { WindowsInstaller } from "../src/WindowsInstaller";
+import { InstallerFactory } from "../src/installers";
 import { Arch, OS } from "../src/platform";
 
 describe("InstallerFactory", () => {
