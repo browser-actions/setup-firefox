@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.6.0...setup-firefox-v1.7.0) (2025-07-27)
+
+
+### Features
+
+* Support Linux ARM64 ([#637](https://github.com/browser-actions/setup-firefox/issues/637)) ([c1a8cea](https://github.com/browser-actions/setup-firefox/commit/c1a8cea110691bde64de6253c0bebfbc740e11ac))
+
+
+### Bug Fixes
+
+* add .exe to firefox-path on Windows ([#635](https://github.com/browser-actions/setup-firefox/issues/635)) ([6a1b4a4](https://github.com/browser-actions/setup-firefox/commit/6a1b4a4b1961b3705b75f7c78b70a56d51fc4c4c))
+
 ## [1.6.0](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.5.4...setup-firefox-v1.6.0) (2025-07-13)
 
 
