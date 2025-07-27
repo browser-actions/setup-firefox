@@ -15,6 +15,10 @@ describe("ArchiveDownloadURL", () => {
       "https://ftp.mozilla.org/pub/firefox/releases/134.0/linux-x86_64/en-US/firefox-134.0.tar.bz2",
     ],
     [
+      { os: OS.LINUX, arch: Arch.ARM64 },
+      "https://ftp.mozilla.org/pub/firefox/releases/134.0/linux-aarch64/en-US/firefox-134.0.tar.bz2",
+    ],
+    [
       { os: OS.MACOS, arch: Arch.AMD64 },
       "https://ftp.mozilla.org/pub/firefox/releases/134.0/mac/en-US/Firefox%20134.0.dmg",
     ],
@@ -76,6 +80,11 @@ describe("LatestDownloadURL", () => {
       LatestVersion.LATEST,
       { os: OS.LINUX, arch: Arch.AMD64 },
       "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US",
+    ],
+    [
+      LatestVersion.LATEST,
+      { os: OS.LINUX, arch: Arch.ARM64 },
+      "https://download.mozilla.org/?product=firefox-latest&os=linux64-aarch64&lang=en-US",
     ],
     [
       LatestVersion.LATEST_DEVEDITION,

@@ -52,6 +52,8 @@ export class ArchiveDownloadURL implements DownloadURL {
       return "linux-i686";
     } else if (os === OS.LINUX && arch === Arch.AMD64) {
       return "linux-x86_64";
+    } else if (os === OS.LINUX && arch === Arch.ARM64) {
+      return "linux-aarch64";
     } else if (os === OS.WINDOWS && arch === Arch.I686) {
       return "win32";
     } else if (os === OS.WINDOWS && arch === Arch.AMD64) {
@@ -120,6 +122,8 @@ export class LatestDownloadURL implements DownloadURL {
       return "linux";
     } else if (os === OS.LINUX && arch === Arch.AMD64) {
       return "linux64";
+    } else if (os === OS.LINUX && arch === Arch.ARM64) {
+      return "linux64-aarch64";
     } else if (os === OS.WINDOWS && arch === Arch.I686) {
       return "win";
     } else if (os === OS.WINDOWS && arch === Arch.AMD64) {

@@ -30,7 +30,7 @@ jobs:
     needs: [build]
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, ubuntu-24.04-arm]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/download-artifact@v4
@@ -40,33 +40,37 @@ jobs:
       - name: Test default
         uses: ./
         id: test-default
-      - run: |
+      - name: Test default version
+        run: |
           firefox --version
           ${{ steps.test-default.outputs.firefox-path }} --version
-      - name: Test latest-esr
+      - name: Test latest-beta
         uses: ./
         with:
-          firefox-version: latest-esr
-        id: test-latest-esr
-      - run: |
+          firefox-version: latest-beta
+        id: test-latest-beta
+      - name: Test latest-beta version
+        run: |
           firefox --version
-          ${{ steps.test-latest-esr.outputs.firefox-path }} --version
-      - name: Test 132.0
+          ${{ steps.test-latest-beta.outputs.firefox-path }} --version
+      - name: Test 140.0
         uses: ./
         with:
-          firefox-version: "132.0"
-        id: test-132-0
-      - run: |
+          firefox-version: "140.0"
+        id: test-140
+      - name: Test 140.0 version
+        run: |
           firefox --version
-          ${{ steps.test-132-0.outputs.firefox-path }} --version
-      - name: Test devedition-132.0b1
+          ${{ steps.test-140.outputs.firefox-path }} --version
+      - name: Test devedition-140.0b1
         uses: ./
         with:
-          firefox-version: "devedition-132.0b1"
-        id: test-devedition-132-0b1
-      - run: |
+          firefox-version: "devedition-140.0b1"
+        id: test-devedition-140-0b1
+      - name: Test devedition-140.0b1 version
+        run: |
           firefox --version
-          ${{ steps.test-devedition-132-0b1.outputs.firefox-path }} --version
+          ${{ steps.test-devedition-140-0b1.outputs.firefox-path }} --version
 
   test-windows:
     needs: [build]
@@ -87,33 +91,33 @@ jobs:
         run: |
           firefox --version
           & "${{ steps.test-default.outputs.firefox-path }}" --version
-      - name: Test latest-esr
+      - name: Test latest-beta
         uses: ./
         with:
-          firefox-version: latest-esr
-        id: test-latest-esr
-      - name: Test latest-esr version
+          firefox-version: latest-beta
+        id: test-latest-beta
+      - name: Test latest-beta version
         shell: pwsh
         run: |
           firefox --version
-          & "${{ steps.test-latest-esr.outputs.firefox-path }}" --version
-      - name: Test 132.0
+          & "${{ steps.test-latest-beta.outputs.firefox-path }}" --version
+      - name: Test 140.0
         uses: ./
         with:
-          firefox-version: "132.0"
-        id: test-132-0
-      - name: Test 132.0 version
+          firefox-version: "140.0"
+        id: test-140
+      - name: Test 140.0 version
         shell: pwsh
         run: |
           firefox --version
-          & "${{ steps.test-132-0.outputs.firefox-path }}" --version
-      - name: Test devedition-132.0b1
+          & "${{ steps.test-140.outputs.firefox-path }}" --version
+      - name: Test devedition-140.0b1
         uses: ./
         with:
-          firefox-version: "devedition-132.0b1"
-        id: test-devedition-132-0b1
-      - name: Test devedition-132.0b1 version
+          firefox-version: "devedition-140.0b1"
+        id: test-devedition-140-0b1
+      - name: Test devedition-140.0b1 version
         shell: pwsh
         run: |
           firefox --version
-          & "${{ steps.test-devedition-132-0b1.outputs.firefox-path }}" --version
+          & "${{ steps.test-devedition-140-0b1.outputs.firefox-path }}" --version
