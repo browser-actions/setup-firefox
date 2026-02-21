@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.7.0...setup-firefox-v1.7.1) (2026-02-21)
+
+
+### Bug Fixes
+
+* bump node version ([#638](https://github.com/browser-actions/setup-firefox/issues/638)) ([6671e17](https://github.com/browser-actions/setup-firefox/commit/6671e17b21f1a2622c5501c2e8a786694ddf5a4c))
+
 ## [1.7.0](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.6.0...setup-firefox-v1.7.0) (2025-07-27)
 
 
