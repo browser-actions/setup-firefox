@@ -10,5 +10,5 @@ outputs:
   firefox-path:
     description: 'The installed Firefox path.'
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'index.js'
