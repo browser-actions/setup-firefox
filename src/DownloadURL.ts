@@ -48,14 +48,10 @@ export class ArchiveDownloadURL implements DownloadURL {
       return "mac";
     } else if (os === OS.MACOS && arch === Arch.ARM64) {
       return "mac";
-    } else if (os === OS.LINUX && arch === Arch.I686) {
-      return "linux-i686";
     } else if (os === OS.LINUX && arch === Arch.AMD64) {
       return "linux-x86_64";
     } else if (os === OS.LINUX && arch === Arch.ARM64) {
       return "linux-aarch64";
-    } else if (os === OS.WINDOWS && arch === Arch.I686) {
-      return "win32";
     } else if (os === OS.WINDOWS && arch === Arch.AMD64) {
       return "win64";
     } else if (os === OS.WINDOWS && arch === Arch.ARM64) {
@@ -118,14 +114,10 @@ export class LatestDownloadURL implements DownloadURL {
       return "osx";
     } else if (os === OS.MACOS && arch === Arch.ARM64) {
       return "osx";
-    } else if (os === OS.LINUX && arch === Arch.I686) {
-      return "linux";
     } else if (os === OS.LINUX && arch === Arch.AMD64) {
       return "linux64";
     } else if (os === OS.LINUX && arch === Arch.ARM64) {
       return "linux64-aarch64";
-    } else if (os === OS.WINDOWS && arch === Arch.I686) {
-      return "win";
     } else if (os === OS.WINDOWS && arch === Arch.AMD64) {
       return "win64";
     } else if (os === OS.WINDOWS && arch === Arch.ARM64) {
