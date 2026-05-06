@@ -2,8 +2,8 @@ import type { Platform } from "./platform";
 
 export class UnsupportedPlatformError extends Error {
   constructor(
-    private readonly platform: Platform,
-    private readonly version?: string,
+    readonly platform: Platform,
+    readonly version?: string,
   ) {
     super(
       version

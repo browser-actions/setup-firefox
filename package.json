@@ -15,7 +15,7 @@
     "@actions/tool-cache": "^4.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.3",
+    "@biomejs/biome": "^2.4.14",
     "@types/node": "^20.6.2",
     "@vercel/ncc": "^0.38.4",
     "typescript": "^6.0.3",
@@ -26,7 +26,7 @@
     "test": "vitest",
     "package": "cp action.yml README.md dist/",
     "lint": "biome ci .",
-    "lint:fix": "biome check --apply ."
+    "lint:fix": "biome check --write ."
   },
   "repository": {
     "type": "git",

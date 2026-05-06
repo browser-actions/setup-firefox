@@ -4,7 +4,7 @@ import * as exec from "@actions/exec";
 import * as tc from "@actions/tool-cache";
 import { DownloadURLFactory } from "./DownloadURLFactory";
 import { testBinaryVersion } from "./firefoxUtils";
-import type { InstallResult, InstallSpec, Installer } from "./installers";
+import type { Installer, InstallResult, InstallSpec } from "./installers";
 import { LatestVersion } from "./versions";
 
 export class MacOSInstaller implements Installer {

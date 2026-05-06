@@ -1,9 +1,9 @@
 import { describe, expect, test } from "vitest";
+import { InstallerFactory } from "../src/installers";
 import { LinuxInstaller } from "../src/LinuxInstaller";
 import { MacOSInstaller } from "../src/MacOSInstaller";
-import { WindowsInstaller } from "../src/WindowsInstaller";
-import { InstallerFactory } from "../src/installers";
 import { Arch, OS } from "../src/platform";
+import { WindowsInstaller } from "../src/WindowsInstaller";
 
 describe("InstallerFactory", () => {
   describe.each([

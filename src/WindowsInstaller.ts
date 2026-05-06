@@ -6,7 +6,7 @@ import * as io from "@actions/io";
 import * as tc from "@actions/tool-cache";
 import { DownloadURLFactory } from "./DownloadURLFactory";
 import { testBinaryVersion } from "./firefoxUtils";
-import type { InstallResult, InstallSpec, Installer } from "./installers";
+import type { Installer, InstallResult, InstallSpec } from "./installers";
 
 export class WindowsInstaller implements Installer {
   async install({
@@ -59,7 +59,7 @@ export class WindowsInstaller implements Installer {
   private async checkInstall(dir: string): Promise<boolean> {
     try {
       await fs.promises.access(dir, fs.constants.F_OK);
-    } catch (err) {
+    } catch (_err) {
       return false;
     }
     return true;

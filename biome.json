@@ -1,6 +1,6 @@
 {
   "files": {
-    "ignore": ["package.json", "dist/**"]
+    "includes": ["**", "!**/package.json", "!dist"]
   },
   "linter": {
     "enabled": true,

@@ -1,7 +1,7 @@
 import { LinuxInstaller } from "./LinuxInstaller";
 import { MacOSInstaller } from "./MacOSInstaller";
-import { WindowsInstaller } from "./WindowsInstaller";
 import { OS, type Platform } from "./platform";
+import { WindowsInstaller } from "./WindowsInstaller";
 
 export type InstallSpec = {
   version: string;
