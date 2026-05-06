@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.7.2](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.7.1...setup-firefox-v1.7.2) (2026-05-06)
+
+
+### Bug Fixes
+
+* drop 32-bit arch support ([#645](https://github.com/browser-actions/setup-firefox/issues/645)) ([c5cfea2](https://github.com/browser-actions/setup-firefox/commit/c5cfea27528d34cb3c7836264c24fb2942b483ff))
+* update Node.js runtime to v24 LTS ([#642](https://github.com/browser-actions/setup-firefox/issues/642)) ([4eb4a82](https://github.com/browser-actions/setup-firefox/commit/4eb4a82c87af820d4b0060dd42369ad513ab247e))
+* upgrade dev dependencies (@actions/*, biome v2, vitest v4, @vercel/ncc) ([#644](https://github.com/browser-actions/setup-firefox/issues/644)) ([59e1322](https://github.com/browser-actions/setup-firefox/commit/59e1322b5ddcfd76ee2ca70862e7cf22bf785260))
+
 ## [1.7.1](https://github.com/browser-actions/setup-firefox/compare/setup-firefox-v1.7.0...setup-firefox-v1.7.1) (2026-02-21)
 
 
