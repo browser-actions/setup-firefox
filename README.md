@@ -43,10 +43,13 @@ jobs:
 
 ### Supported version formats
 
-The action supports the following version formats:
+| Version format | Example | Download source |
+| --- | --- | --- |
+| Release channel | `latest` (default), `latest-beta`, `latest-devedition`, `latest-nightly`, `latest-esr` | [Mozilla Releases][] |
+| Specific version | `84.0`, `84.0.1`, `beta-84.0b1`, `devedition-84.0b1` | [Mozilla FTP][] |
 
-- Release channels: `latest` (default), `latest-beta`, `latest-devedition`, `latest-nightly`, `latest-esr`
-- Specific release version: `84.0`, `84.0.1`, `beta-84.0b1`, `devedition-84.0b1`
+[Mozilla Releases]: https://download.mozilla.org/
+[Mozilla FTP]: https://ftp.mozilla.org/pub/firefox/releases/
 
 ## Supported platforms
 
