@@ -1,11 +1,18 @@
 {
   "files": {
-    "includes": ["**", "!**/package.json", "!dist"]
+    "includes": [
+      "**",
+      "!**/package.json",
+      "!!**/dist",
+      "!**/*.md",
+      "!**/*.yml",
+      "!**/*.yaml"
+    ]
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "complexity": {
         "useLiteralKeys": "off"
       },
