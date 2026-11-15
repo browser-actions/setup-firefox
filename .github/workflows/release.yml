@@ -12,25 +12,56 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    uses: ./.github/workflows/build.yml
-
   release:
     runs-on: ubuntu-latest
-    needs: [build]
     permissions:
       contents: write
-      actions: write
       pull-requests: write
       issues: write
+    outputs:
+      created: ${{ steps.release.outputs.release_created }}
+      sha: ${{ steps.release.outputs.sha }}
+      version: ${{ steps.release.outputs.version }}
+      major: ${{ steps.release.outputs.major }}
     steps:
       - uses: googleapis/release-please-action@v5.0.0
         id: release
 
-      - name: Dispatch publication from source tag
-        if: ${{ steps.release.outputs.release_created == 'true' }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-          SOURCE_TAG: ${{ steps.release.outputs.tag_name }}
-        run: gh workflow run publish.yml --ref "$SOURCE_TAG"
+  build:
+    needs: [release]
+    if: ${{ needs.release.outputs.created == 'true' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      ref: ${{ needs.release.outputs.sha }}
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: [release, build]
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ needs.release.outputs.sha }}
+          persist-credentials: true
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: dist
+
+      - name: Publish built action
+        uses: ueokande/publish-built-action@master
+        with:
+          tag: v${{ needs.release.outputs.version }}
+          floating-tags: v${{ needs.release.outputs.major }}
+          paths: |
+            index.js
+            package.json
+            action.yml
+            README.md
+          create-release: 'true'
+          generate-release-notes: 'true'
+          sign-commit: 'true'
+          sign-tag: 'true'
+          gpg-private-key: ${{ secrets.PRIVATE_SIGNING_KEY }}
+          author-name: ueokande
+          author-email: ueokande@i-beam.org
