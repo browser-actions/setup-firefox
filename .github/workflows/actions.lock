@@ -13,6 +13,7 @@ workflows:
         - 'actions/checkout@v7.0.1'
         - 'actions/download-artifact@v8.0.2'
         - 'googleapis/release-please-action@v5.0.0'
+        - 'ueokande/publish-built-action@master'
 dependencies:
     'actions/checkout@v7.0.1':
         ref: 'v7.0.1'
@@ -44,3 +45,8 @@ dependencies:
         commit: 'sha1-73e46992e05b19abd31f2f3c20e0e7370d762115'
         owner_id: 21320719
         repo_id: 262289747
+    'ueokande/publish-built-action@master':
+        ref: 'master'
+        commit: 'sha1-ea3ab73979fadf116cd6c02cc2418383f03be7b8'
+        owner_id: 534166
+        repo_id: 1456581006
