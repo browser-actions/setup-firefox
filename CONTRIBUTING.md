@@ -59,9 +59,9 @@ Releases are automated with [Release Please](https://github.com/googleapis/relea
 3. Squash and merge the release PR.
 4. CI builds and tests `dist/`. `ueokande/publish-built-action` publishes its contents as a signed, parentless commit with an immutable `vX.Y.Z` tag and a floating `vX` tag, then generates the distribution Release notes. The `latest` branch is no longer updated.
 
-The `release` workflow runs release-please on `master`. Its `setup-firefox-vX.Y.Z` tag push triggers the separate `publish` workflow, which checks out and builds that exact source commit before publishing `vX.Y.Z` and `vX`. Distribution Release notes are generated independently because the source Release may not exist yet when the tag push is received.
+The `release` workflow runs release-please on `master`. After creating a `setup-firefox-vX.Y.Z` source tag and Release, it dispatches the separate `publish` workflow with that tag as its `ref`. The publish workflow checks out and builds that exact source commit before publishing `vX.Y.Z` and `vX` with generated distribution Release notes.
 
-Configure `RELEASE_PLEASE_TOKEN` with a PAT (or equivalent token) that has Contents, Pull requests and Issues write access to this repository. The default `GITHUB_TOKEN` cannot trigger the tag-push workflow. Publication uses the existing `PRIVATE_SIGNING_KEY` secret. If Release creation fails after tags have been pushed, retry only Release creation; rerunning publication will reject the existing immutable tag.
+Both workflows use `GITHUB_TOKEN`; no PAT is required. The release job grants `actions: write` to dispatch publication. `publish.yml` must be present on the default branch and in the source tag, and manual dispatches must select a `setup-firefox-vX.Y.Z` tag rather than a branch. Publication uses the existing `PRIVATE_SIGNING_KEY` secret. If Release creation fails after tags have been pushed, retry only Release creation; rerunning publication will reject the existing immutable tag.
 
 > **Note:** Never commit generated `dist/` files to the source branch — they are built and published automatically by CI.
 

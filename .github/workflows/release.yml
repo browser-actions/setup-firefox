@@ -20,9 +20,17 @@ jobs:
     needs: [build]
     permissions:
       contents: write
+      actions: write
       pull-requests: write
       issues: write
     steps:
       - uses: googleapis/release-please-action@v5.0.0
-        with:
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+        id: release
+
+      - name: Dispatch publication from source tag
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_TAG: ${{ steps.release.outputs.tag_name }}
+        run: gh workflow run publish.yml --ref "$SOURCE_TAG"
