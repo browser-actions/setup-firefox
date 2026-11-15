@@ -64,7 +64,7 @@ Tests live in `__test__/` and use [Vitest](https://vitest.dev/).
 - **Formatter:** Biome with space indentation.
 - **Node.js ≥ 24** is required.
 - **Conventional Commits** are required for all commits (`feat:`, `fix:`, `chore:`, etc.).
-- **Never commit `dist/`** — it is built by CI and deployed to the `latest` branch on release.
+- **Never commit `dist/`** — it is built by CI and published as distribution tags on release.
 - The `action.yml` `main` field points to `index.js` inside `dist/`, not the TypeScript source.
 
 ## GitHub Actions lockfile

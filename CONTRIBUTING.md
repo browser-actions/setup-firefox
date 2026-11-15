@@ -55,9 +55,13 @@ Examples:
 Releases are automated with [Release Please](https://github.com/googleapis/release-please):
 
 1. Merge changes to `master` following Conventional Commits.
-2. Release Please opens or updates a release PR with version bumps and changelog updates.
+2. Release Please opens or updates a release PR with version bumps and changelog updates, then creates a `setup-firefox-vX.Y.Z` source tag and Release.
 3. Squash and merge the release PR.
-4. CI builds `dist/`, pushes it to the `latest` branch, and creates signed `vX` and `vX.Y.Z` tags.
+4. CI builds and tests `dist/`. `ueokande/publish-built-action` publishes its contents as a signed, parentless commit with an immutable `vX.Y.Z` tag and a floating `vX` tag, then generates the distribution Release notes. The `latest` branch is no longer updated.
+
+The `release` workflow runs release-please on `master`. Only when a release is created, it passes release-please's source commit SHA to the reusable build/test workflow. After all build and test jobs succeed, a publication job in the same `release.yml` workflow checks out that SHA, downloads the build artifact, and publishes `vX.Y.Z` and `vX`. The `setup-firefox-vX.Y.Z` tag identifies the source; its creation does not trigger another workflow.
+
+All jobs use `GITHUB_TOKEN`; no PAT, workflow dispatch, or `actions: write` permission is required. Publication uses the existing `PRIVATE_SIGNING_KEY` secret. If Release creation fails after tags have been pushed, retry only Release creation; rerunning publication will reject the existing immutable tag.
 
 > **Note:** Never commit generated `dist/` files to the source branch — they are built and published automatically by CI.
 
