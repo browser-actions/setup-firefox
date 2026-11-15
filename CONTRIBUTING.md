@@ -55,11 +55,11 @@ Examples:
 Releases are automated with [Release Please](https://github.com/googleapis/release-please):
 
 1. Merge changes to `master` following Conventional Commits.
-2. Release Please opens or updates a release PR with version bumps and changelog updates, then creates a `source-vX.Y.Z` source tag and Release.
+2. Release Please opens or updates a release PR with version bumps and changelog updates, then creates a `setup-firefox-vX.Y.Z` source tag and Release.
 3. Squash and merge the release PR.
 4. CI builds and tests `dist/`. `ueokande/publish-built-action` publishes its contents as a signed, parentless commit with an immutable `vX.Y.Z` tag and a floating `vX` tag, then generates the distribution Release notes. The `latest` branch is no longer updated.
 
-The `release` workflow runs release-please on `master`. Its `source-vX.Y.Z` tag push triggers the separate `publish` workflow, which checks out and builds that exact source commit before publishing `vX.Y.Z` and `vX`. Distribution Release notes are generated independently because the source Release may not exist yet when the tag push is received.
+The `release` workflow runs release-please on `master`. Its `setup-firefox-vX.Y.Z` tag push triggers the separate `publish` workflow, which checks out and builds that exact source commit before publishing `vX.Y.Z` and `vX`. Distribution Release notes are generated independently because the source Release may not exist yet when the tag push is received.
 
 Configure `RELEASE_PLEASE_TOKEN` with a PAT (or equivalent token) that has Contents, Pull requests and Issues write access to this repository. The default `GITHUB_TOKEN` cannot trigger the tag-push workflow. Publication uses the existing `PRIVATE_SIGNING_KEY` secret. If Release creation fails after tags have been pushed, retry only Release creation; rerunning publication will reject the existing immutable tag.
 

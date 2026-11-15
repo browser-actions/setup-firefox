@@ -5,7 +5,7 @@
       "release-type": "node",
       "bump-minor-pre-major": false,
       "bump-patch-for-minor-pre-major": false,
-      "component": "source",
+      "component": "setup-firefox",
       "include-component-in-tag": true,
       "tag-separator": "-"
     }
