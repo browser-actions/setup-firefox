@@ -24,33 +24,5 @@ jobs:
       issues: write
     steps:
       - uses: googleapis/release-please-action@v5.0.0
-        id: release
-
-      - uses: actions/checkout@v7.0.1
         with:
-          ref: ${{ steps.release.outputs.sha }}
-          persist-credentials: true
-        if: ${{ steps.release.outputs.release_created }}
-      - uses: actions/download-artifact@v8.0.2
-        with:
-          name: dist
-        if: ${{ steps.release.outputs.release_created }}
-
-      - name: Publish built action
-        uses: ueokande/publish-built-action@master
-        if: ${{ steps.release.outputs.release_created }}
-        with:
-          tag: v${{ steps.release.outputs.version }}
-          floating-tags: v${{ steps.release.outputs.major }}
-          paths: |
-            index.js
-            package.json
-            action.yml
-            README.md
-          create-release: 'true'
-          copy-release-notes-from: ${{ steps.release.outputs.tag_name }}
-          sign-commit: 'true'
-          sign-tag: 'true'
-          gpg-private-key: ${{ secrets.PRIVATE_SIGNING_KEY }}
-          author-name: ueokande
-          author-email: ueokande@i-beam.org
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
